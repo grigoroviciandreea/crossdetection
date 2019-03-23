@@ -1,3 +1,10 @@
-﻿  birdEyeView.cpp
-  Crosswalk.vcxproj -> F:\master\disertatie\Crosswalk\x64\Debug\Crosswalk.exe
-  Crosswalk.vcxproj -> F:\master\disertatie\Crosswalk\x64\Debug\Crosswalk.pdb (Partial PDB)
+﻿  point.cpp
+  Main.cpp
+  line.cpp
+  houghTransform.cpp
+  crosswalk.cpp
+  birdEyeView.cpp
+  Generating Code...
+  LINK : F:\master\repo_cross\crossdetection\Crosswalk\x64\Debug\Crosswalk.exe not found or not built by the last incremental link; performing full link
+  Crosswalk.vcxproj -> F:\master\repo_cross\crossdetection\Crosswalk\x64\Debug\Crosswalk.exe
+  Crosswalk.vcxproj -> F:\master\repo_cross\crossdetection\Crosswalk\x64\Debug\Crosswalk.pdb (Partial PDB)
