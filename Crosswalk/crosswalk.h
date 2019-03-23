@@ -1,5 +1,5 @@
 #pragma once
-#include "houghTransform.h"
+#include "vanishingPoint.h"
 
 ///iau serie de linii hough din imagine (gasite cu ajutorul clasei hough, ce indeplinesc anumite conditii => crosswalk
 namespace cross

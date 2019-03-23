@@ -124,6 +124,7 @@
     <ClCompile Include="line.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="point.cpp" />
+    <ClCompile Include="vanishingPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="birdEyeView.h" />
@@ -131,6 +132,7 @@
     <ClInclude Include="houghTransform.h" />
     <ClInclude Include="line.h" />
     <ClInclude Include="point.h" />
+    <ClInclude Include="vanishingPoint.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
