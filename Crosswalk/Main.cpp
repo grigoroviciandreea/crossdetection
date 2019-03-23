@@ -1,10 +1,6 @@
 #include "crosswalk.h"
 #include "birdEyeView.h"
 
-
-
-
-
 bool saveLinesForManyImages()
 {
 	//while(read from a file path ->> more images)  -> make sure you have the images savede in a folder inside crosswalk_images
@@ -50,18 +46,27 @@ cv::Mat ComputeBirdEyeView()
 	return img;
 }
 
-void EasyTests()
+void ProbHoughTest()
 {
 	hough::Hough H;
-	H.readImage("./crosswalk_images/cross3.png");
+	H.readImage("./crosswalk_images/testC.png");
 	cross::Crosswalk C(H.image(), H.probabilisticHoughLines('1'));
-	C.findCrosswalkInImage();
+	//C.findCrosswalkInImage();
+}
+
+void HoughTest()
+{
+	hough::Hough H;
+	H.readImage("./crosswalk_images/testC.png");
+	cross::Crosswalk C(H.image(), H.houghLines('1'));
+	//C.findCrosswalkInImage();
 }
 
 int main()
 {	
-	//EasyTests();
-	ComputeBirdEyeView();
+	ProbHoughTest();
+	//HoughTest();
+	//ComputeBirdEyeView();
 	cv::waitKey(0);
 	return 0;
 }

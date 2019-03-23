@@ -12,11 +12,12 @@ std::vector<line::Line> hough::Hough::houghLines(char i) {
 	//calculate Hough lines from image
 	std::vector<cv::Vec2f> houghLines;
 	cv::Mat houghLinesSrc;
-	//cv::cvtColor(m_image, houghLinesSrc, CV_BGR2GRAY);
+	cv::cvtColor(m_image, houghLinesSrc, CV_BGR2GRAY);
 
+    //houghLinesSrc = sobelResult(i);
 	houghLinesSrc = cannyResult(i);
 
-	HoughLines(houghLinesSrc, houghLines, 1, CV_PI / 180, 160);
+	HoughLines(houghLinesSrc, houghLines, 1, CV_PI / 180, 50);
 
 	if (houghLines.size() > 0)
 	{
@@ -48,6 +49,8 @@ std::vector<line::Line> hough::Hough::houghLines(char i) {
 
 	std::string imageName = "Hough" + std::string(1, i);
 
+	cv::resize(result, result, cv::Size(), 0.4, 0.4);
+
 	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);// Create a window for display.
 	imshow(imageName, result);
 	return finalLines;
@@ -64,7 +67,7 @@ std::vector<line::Line> hough::Hough::probabilisticHoughLines(char i) {
 	houghLinesSrc = cannyResult(i);
 	//houghLinesSrc = sobelResult(i);
 	std::vector<cv::Vec4i> lines;
-	HoughLinesP(houghLinesSrc, lines, 1, CV_PI / 180, 30, 10, 5);
+	HoughLinesP(houghLinesSrc, lines, 1, CV_PI / 180, 10, 20, 160);
 	
 	finalLines.resize(lines.size());
 	if (lines.size() > 0)
@@ -80,7 +83,7 @@ std::vector<line::Line> hough::Hough::probabilisticHoughLines(char i) {
 	}
 
 	std::string imageName = "Probabilistic Hough" + std::string(1, i);
-
+	cv::resize(result, result, cv::Size(), 0.4, 0.4);
 	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE); // Create a window for display.
 	imshow(imageName, result);
 	return finalLines;
@@ -112,6 +115,7 @@ void  hough::Hough::readImage(std::string path) {
 	{
 		std::cout << "Could not open or find the image" << std::endl;
 	}
+	cv::resize(m_image, m_image, cv::Size(), 0.4, 0.4);
 }
 
 cv::Mat hough::Hough::cannyResult(char i) {
@@ -125,8 +129,11 @@ cv::Mat hough::Hough::cannyResult(char i) {
 
 	std::string imageName = "Canny Result" + std::string(1, i);
 
+	cv::Mat out;
+
+	cv::resize(image_canny, out, cv::Size(), 0.4, 0.4);
 	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);
-	imshow(imageName, image_canny);
+	imshow(imageName, out);
 	return image_canny;
 }
 
@@ -137,13 +144,13 @@ cv::Mat hough::Hough::sobelResult(char i) {
 	cv::blur(m_image, image_blur, cv::Size(5, 5));
 	//  use image_blur instead of m_image 
 
-	cv::Sobel(image_blur, image_sobel, CV_8U, 1, 0, 3);
+	cv::Sobel(image_blur, image_sobel, CV_8UC1, 1, 0, 3);
 
 
 	std::string imageName = "Sobel Result" + std::string(1, i);
 
-	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);
-	imshow(imageName, image_sobel);
+	//cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);
+	//imshow(imageName, image_sobel);
 	return image_sobel;
 }
 
