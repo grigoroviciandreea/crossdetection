@@ -63,8 +63,10 @@ void HoughTest()
 }
 
 int main()
-{	
-	ProbHoughTest();
+{
+	VP::vanishingPt obj;
+	//cv::destroyAllWindows();
+	//ProbHoughTest();
 	//HoughTest();
 	//ComputeBirdEyeView();
 	cv::waitKey(0);
