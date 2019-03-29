@@ -13,13 +13,12 @@ namespace VP
 	class vanishingPt
 	{
 	public:
-		cv::Mat image, img, gray;
+		cv::Mat image;
+		cv::Mat paint_lines_img;
 		cv::Mat frame;
 		vector< vector<int> > points;
 		mat A, b, prevRes;
-		mat Atemp, btemp, res, aug, error, soln;
-		//ofstream out1, out2;
-		float epsilon;
+		mat Atemp, btemp, res, error, soln;
 
 		//store slope (m) and y-intercept (c) of each lines
 		float m, c;
@@ -27,14 +26,8 @@ namespace VP
 		//store minimum length for lines to be considered while estimating vanishing point
 		int minlength;
 
-		//temporary vector for intermediate storage
-		vector<int> temp;
-
 		//store (x1, y1) and (x2, y2) endpoints for each line segment
 		vector<cv::Vec4i> lines_std;
-
-		//video capture object from OpenCV
-		cv::VideoCapture cap;
 
 		//to store intermediate errors
 		double temperr;
@@ -42,20 +35,19 @@ namespace VP
 		//constructor to set video/webcam and find vanishing point
 		vanishingPt()
 		{
-			cv::namedWindow("win", 2);
-			cv::namedWindow("Lines", 2);
+			cv::namedWindow("win", 1);
+			cv::namedWindow("Lines", 1);
 
 			int flag = 0;
 
-			image = cv::imread("./crosswalk_images/crosswalk1.png", CV_LOAD_IMAGE_UNCHANGED);   // Read the file
-
+			image = cv::imread("./crosswalk_images/testC.png", CV_LOAD_IMAGE_UNCHANGED);   // Read the file
+			image.copyTo(paint_lines_img);
 			// define minimum length requirement for any line
 			minlength = image.cols * image.cols * 0.001;
 
 			cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);
-
-			cv::resize(image, image, cv::Size(480, 320));
-
+			
+			
 			//equalize histogram
 			cv::equalizeHist(image, image);
 
@@ -70,6 +62,9 @@ namespace VP
 		}
 		void init(cv::Mat image, mat prevRes)
 		{
+			//temporary vector for intermediate storage
+			vector<int> temp;
+
 			//create OpenCV object for line segment detection
 			cv::Ptr<cv::LineSegmentDetector> ls = cv::createLineSegmentDetector(cv::LSD_REFINE_STD);
 
@@ -85,7 +80,6 @@ namespace VP
 
 			for (int i = 0; i<lines_std.size(); i++)
 			{
-
 				//ignore if almost vertical
 				if (abs(lines_std[i][0] - lines_std[i][2]) < 10 || abs(lines_std[i][1] - lines_std[i][3]) < 10) //check if almost vertical
 					continue;
@@ -102,11 +96,31 @@ namespace VP
 				points.push_back(temp);
 				temp.clear();
 			}
+			cv::cvtColor(drawnLines, drawnLines, cv::COLOR_GRAY2RGB);
 			ls->drawSegments(drawnLines, lines_std);
 			cv::imshow("Lines", drawnLines);
-			//cout<<"Detected:"<<lines_std.size()<<endl;
-			//cout<<"Filtered:"<<points.size()<<endl;
+			cout<<"Detected:"<<lines_std.size()<<endl;
+			cout<<"Filtered:"<<points.size()<<endl;
+			paint_lines();
 		}
+
+		void paint_lines()
+		{
+			cv::Mat result(paint_lines_img);
+			if (lines_std.size() > 0)
+			{
+				// paint detected lines
+				for (size_t i = 0; i < lines_std.size(); i++)
+				{
+					cv::Vec4i l = lines_std[i];
+					cv::line(result, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
+				}
+			}
+
+			cv::namedWindow("real_paint", cv::WINDOW_AUTOSIZE); // Create a window for display.
+			imshow("real_paint", result);
+		}
+
 		void makeLines(int flag)
 		{
 			// to solve Ax = b for x

@@ -83,6 +83,7 @@ std::vector<line::Line> hough::Hough::probabilisticHoughLines(char i) {
 	}
 
 	std::string imageName = "Probabilistic Hough" + std::string(1, i);
+	//resize frame to 480x320 cv::resize(image, image, cv::Size(480, 320));
 	cv::resize(result, result, cv::Size(), 0.4, 0.4);
 	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE); // Create a window for display.
 	imshow(imageName, result);
