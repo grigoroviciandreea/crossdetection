@@ -62,9 +62,16 @@ void HoughTest()
 	//C.findCrosswalkInImage();
 }
 
-int main()
+void VanishingPoint()
 {
 	VP::vanishingPt obj;
+	point::Point p = obj.getVP();
+	cout << "\n\nResult:\n" << p.x() << "," << p.y() << "\nError:";
+}
+
+int main()
+{
+	VanishingPoint();
 	//cv::destroyAllWindows();
 	//ProbHoughTest();
 	//HoughTest();

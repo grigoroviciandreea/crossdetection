@@ -120,6 +120,7 @@
   <ItemGroup>
     <ClCompile Include="birdEyeView.cpp" />
     <ClCompile Include="crosswalk.cpp" />
+    <ClCompile Include="helperFunctions.cpp" />
     <ClCompile Include="houghTransform.cpp" />
     <ClCompile Include="line.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -129,6 +130,7 @@
   <ItemGroup>
     <ClInclude Include="birdEyeView.h" />
     <ClInclude Include="crosswalk.h" />
+    <ClInclude Include="helperFunctions.h" />
     <ClInclude Include="houghTransform.h" />
     <ClInclude Include="line.h" />
     <ClInclude Include="point.h" />

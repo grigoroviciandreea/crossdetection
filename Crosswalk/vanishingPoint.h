@@ -1,11 +1,10 @@
 #pragma once
 
 #include "houghTransform.h"
-#include <armadillo>
+#include "helperFunctions.h"
 
 using namespace cv;
 using namespace std;
-using namespace arma;
 
 namespace VP
 {
@@ -13,11 +12,49 @@ namespace VP
 	class vanishingPt
 	{
 	public:
+		vanishingPt()
+		{
+			cv::namedWindow("win", 1);
+			cv::namedWindow("Lines", 1);
+
+			int flag = 0;
+
+			image = cv::imread("./crosswalk_images/testC.png", CV_LOAD_IMAGE_UNCHANGED);   // Read the file
+			image.copyTo(paint_lines_img);
+
+			// define minimum length requirement for any line
+			minlength = static_cast<int>(image.cols * image.cols * 0.001F);
+
+			cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);
+
+
+			//equalize histogram
+			cv::equalizeHist(image, image);
+
+			//initialize the line segment matrix in format y = m*x + c	
+			init(image);
+
+			//draw lines on image and display
+			makeLines(flag);
+
+			//approximate vanishing point
+			eval();
+		}
+
+		point::Point getVP()
+		{
+			point::Point vp;
+			vp.set_x(soln(0, 0));
+			vp.set_y(soln(1, 0));
+			
+			return vp;
+		}
+	private:
 		cv::Mat image;
 		cv::Mat paint_lines_img;
-		cv::Mat frame;
+
 		vector< vector<int> > points;
-		mat A, b, prevRes;
+		mat A, b;
 		mat Atemp, btemp, res, error, soln;
 
 		//store slope (m) and y-intercept (c) of each lines
@@ -32,35 +69,7 @@ namespace VP
 		//to store intermediate errors
 		double temperr;
 
-		//constructor to set video/webcam and find vanishing point
-		vanishingPt()
-		{
-			cv::namedWindow("win", 1);
-			cv::namedWindow("Lines", 1);
-
-			int flag = 0;
-
-			image = cv::imread("./crosswalk_images/testC.png", CV_LOAD_IMAGE_UNCHANGED);   // Read the file
-			image.copyTo(paint_lines_img);
-			// define minimum length requirement for any line
-			minlength = image.cols * image.cols * 0.001;
-
-			cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);
-			
-			
-			//equalize histogram
-			cv::equalizeHist(image, image);
-
-			//initialize the line segment matrix in format y = m*x + c	
-			init(image, prevRes);
-
-			//draw lines on image and display
-			makeLines(flag);
-
-			//approximate vanishing point
-			eval();
-		}
-		void init(cv::Mat image, mat prevRes)
+		void init(cv::Mat image)
 		{
 			//temporary vector for intermediate storage
 			vector<int> temp;
@@ -74,9 +83,6 @@ namespace VP
 			//detect lines in image and store in linse_std
 			//store (x1, y1) and (x2, y2) endpoints for each line segment
 			ls->detect(image, lines_std);
-
-			// Show found lines
-			cv::Mat drawnLines(image);
 
 			for (int i = 0; i<lines_std.size(); i++)
 			{
@@ -96,29 +102,9 @@ namespace VP
 				points.push_back(temp);
 				temp.clear();
 			}
-			cv::cvtColor(drawnLines, drawnLines, cv::COLOR_GRAY2RGB);
-			ls->drawSegments(drawnLines, lines_std);
-			cv::imshow("Lines", drawnLines);
 			cout<<"Detected:"<<lines_std.size()<<endl;
 			cout<<"Filtered:"<<points.size()<<endl;
-			paint_lines();
-		}
-
-		void paint_lines()
-		{
-			cv::Mat result(paint_lines_img);
-			if (lines_std.size() > 0)
-			{
-				// paint detected lines
-				for (size_t i = 0; i < lines_std.size(); i++)
-				{
-					cv::Vec4i l = lines_std[i];
-					cv::line(result, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
-				}
-			}
-
-			cv::namedWindow("real_paint", cv::WINDOW_AUTOSIZE); // Create a window for display.
-			imshow("real_paint", result);
+			paint_lines(paint_lines_img, lines_std, "PaintLinesVP");
 		}
 
 		void makeLines(int flag)
@@ -189,7 +175,7 @@ namespace VP
 					// to store intermediate error values
 					temperr = 0;
 					//summation of errors
-					for (int i = 0; i<error.n_rows; i++)
+					for (unsigned int i = 0; i < error.n_rows; i++)
 						temperr += (error(i, 0)*error(i, 0)) / 1000;
 
 					//scale errors to prevent any overflows
@@ -204,18 +190,11 @@ namespace VP
 				}
 			}
 
-			//cout<<"\n\nResult:\n"<<soln(0,0)<<","<<soln(1,0)<<"\nError:"<<err<<"\n\n";
-
-			// draw a circle to visualize the approximate vanishing point
-			if (soln(0, 0) > 0 && soln(0, 0) < image.cols && soln(1, 0) > 0 && soln(1, 0) < image.rows)
-				cv::circle(image, Point(soln(0, 0), soln(1, 0)), 25, cv::Scalar(0, 0, 255), 10);
-			cv::imshow("win", image);
+			paint_vp(paint_lines_img, getVP(), "VP");
 
 			//flush the vector
 			points.clear();
 
-			//toDo: use previous frame's result to reduce calculations and stabilize the region of vanishing point
-			prevRes = soln;
 		}
 
 		//function to calculate and return the intersection point

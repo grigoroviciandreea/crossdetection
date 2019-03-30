@@ -1,5 +1,5 @@
 #pragma once
-#include "line.h"
+#include "helperfunctions.h"
 
 namespace hough
 {

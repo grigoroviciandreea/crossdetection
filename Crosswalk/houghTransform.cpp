@@ -11,14 +11,17 @@ std::vector<line::Line> hough::Hough::houghLines(char i) {
 	std::vector<line::Line> finalLines;
 	//calculate Hough lines from image
 	std::vector<cv::Vec2f> houghLines;
+	std::vector<cv::Vec4i> lines;
+
 	cv::Mat houghLinesSrc;
 	cv::cvtColor(m_image, houghLinesSrc, CV_BGR2GRAY);
 
     //houghLinesSrc = sobelResult(i);
 	houghLinesSrc = cannyResult(i);
 
-	HoughLines(houghLinesSrc, houghLines, 1, CV_PI / 180, 50);
+	HoughLines(houghLinesSrc, houghLines, 30, CV_PI / 180, 30);
 
+	lines.resize(houghLines.size());
 	if (houghLines.size() > 0)
 	{
 		// hough coordinates to xy coordinates
@@ -32,27 +35,15 @@ std::vector<line::Line> hough::Hough::houghLines(char i) {
 			pt1y = (float)(y0 + 1000 * (a));
 			pt2x = (float)(x0 - 1000 * (-b));
 			pt2y = (float)(y0 - 1000 * (a));
-
+			lines[i][0] = cvRound(pt1x);
+			lines[i][1] = cvRound(pt1y);
+			lines[i][2] = cvRound(pt2x);
+			lines[i][3] = cvRound(pt2y);
 			finalLines.push_back(line::Line(point::Point(pt1x, pt1y), point::Point(pt2x, pt2y)));
-		}
-		// paint detected lines
-		for (size_t i = 0; i < finalLines.size(); i++)
-		{
-			line::Line l = finalLines[i];
-			int p1 = cvRound(l.pointStart().x());
-			int p2 = cvRound(l.pointStart().y());
-			int p3 = cvRound(l.pointEnd().x());
-			int p4 = cvRound(l.pointEnd().y());
-			cv::line(result, cv::Point(p1, p2), cv::Point(p3, p4), cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
 		}
 	}
 
-	std::string imageName = "Hough" + std::string(1, i);
-
-	cv::resize(result, result, cv::Size(), 0.4, 0.4);
-
-	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);// Create a window for display.
-	imshow(imageName, result);
+	paint_lines(result, lines, "Hough");
 	return finalLines;
 }
 
@@ -72,21 +63,15 @@ std::vector<line::Line> hough::Hough::probabilisticHoughLines(char i) {
 	finalLines.resize(lines.size());
 	if (lines.size() > 0)
 	{
-		// paint detected lines
 		for (size_t i = 0; i < lines.size(); i++)
 		{
 			cv::Vec4i l = lines[i];
-			cv::line(result, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
-			finalLines[i].set_pointStart(point::Point((float)l[0],(float) l[1]));
+			finalLines[i].set_pointStart(point::Point((float)l[0], (float)l[1]));
 			finalLines[i].set_pointEnd(point::Point((float)l[2], (float)l[3]));
 		}
 	}
 
-	std::string imageName = "Probabilistic Hough" + std::string(1, i);
-	//resize frame to 480x320 cv::resize(image, image, cv::Size(480, 320));
-	cv::resize(result, result, cv::Size(), 0.4, 0.4);
-	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE); // Create a window for display.
-	imshow(imageName, result);
+	paint_lines(result, lines, "HoughProb");
 	return finalLines;
 }
 
@@ -116,7 +101,6 @@ void  hough::Hough::readImage(std::string path) {
 	{
 		std::cout << "Could not open or find the image" << std::endl;
 	}
-	cv::resize(m_image, m_image, cv::Size(), 0.4, 0.4);
 }
 
 cv::Mat hough::Hough::cannyResult(char i) {
@@ -125,16 +109,12 @@ cv::Mat hough::Hough::cannyResult(char i) {
 	cv::blur(m_image, image_blur, cv::Size(5, 5));
 	//  use image_blur instead of m_image 
 
-	cv::Canny(image_blur, image_canny, 100, 150, 3);
-
+	cv::Canny(image_blur, image_canny, 30, 50, 3);
 
 	std::string imageName = "Canny Result" + std::string(1, i);
 
-	cv::Mat out;
-
-	cv::resize(image_canny, out, cv::Size(), 0.4, 0.4);
 	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);
-	imshow(imageName, out);
+	imshow(imageName, image_canny);
 	return image_canny;
 }
 
@@ -147,11 +127,10 @@ cv::Mat hough::Hough::sobelResult(char i) {
 
 	cv::Sobel(image_blur, image_sobel, CV_8UC1, 1, 0, 3);
 
-
 	std::string imageName = "Sobel Result" + std::string(1, i);
 
-	//cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);
-	//imshow(imageName, image_sobel);
+	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);
+	imshow(imageName, image_sobel);
 	return image_sobel;
 }
 
