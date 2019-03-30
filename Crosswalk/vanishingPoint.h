@@ -23,10 +23,9 @@ namespace VP
 			image.copyTo(paint_lines_img);
 
 			// define minimum length requirement for any line
-			minlength = static_cast<int>(image.cols * image.cols * 0.001F);
+			minlength = static_cast<int>(image.cols * image.rows * 0.001F);
 
 			cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);
-
 
 			//equalize histogram
 			cv::equalizeHist(image, image);
@@ -49,33 +48,19 @@ namespace VP
 			
 			return vp;
 		}
-	private:
-		cv::Mat image;
-		cv::Mat paint_lines_img;
 
-		vector< vector<int> > points;
-		mat A, b;
-		mat Atemp, btemp, res, error, soln;
-
-		//store slope (m) and y-intercept (c) of each lines
-		float m, c;
-
-		//store minimum length for lines to be considered while estimating vanishing point
-		int minlength;
-
-		//store (x1, y1) and (x2, y2) endpoints for each line segment
-		vector<cv::Vec4i> lines_std;
-
-		//to store intermediate errors
-		double temperr;
-
-		void init(cv::Mat image)
+		std::vector<line::Line> getLines()
 		{
-			//temporary vector for intermediate storage
-			vector<int> temp;
+			return linesVector;
+		}
 
+		void linesDetector(cv::Mat image)
+		{
 			//create OpenCV object for line segment detection
 			cv::Ptr<cv::LineSegmentDetector> ls = cv::createLineSegmentDetector(cv::LSD_REFINE_STD);
+
+			//temporary vector for intermediate storage
+			vector<int> temp;
 
 			//initialize
 			lines_std.clear();
@@ -93,7 +78,8 @@ namespace VP
 				if (((lines_std[i][0] - lines_std[i][2])*(lines_std[i][0] - lines_std[i][2]) + (lines_std[i][1] - lines_std[i][3])*(lines_std[i][1] - lines_std[i][3])) < minlength)
 					continue;
 
-				//store valid lines' endpoints for calculations
+				//store valid lines' endpoints for calculations 
+				//only points is used for calculate VP
 				for (int j = 0; j<4; j++)
 				{
 					temp.push_back(lines_std[i][j]);
@@ -101,10 +87,38 @@ namespace VP
 
 				points.push_back(temp);
 				temp.clear();
+				linesVector.push_back(line::Line(point::Point(lines_std[i][0], lines_std[i][1]), point::Point(lines_std[i][2], lines_std[i][3])));
 			}
-			cout<<"Detected:"<<lines_std.size()<<endl;
-			cout<<"Filtered:"<<points.size()<<endl;
-			paint_lines(paint_lines_img, lines_std, "PaintLinesVP");
+
+		}
+	private:
+		cv::Mat image;
+		cv::Mat paint_lines_img;
+
+		vector< vector<int> > points;
+		mat A, b;
+		mat Atemp, btemp, res, error, soln;
+
+		//store slope (m) and y-intercept (c) of each lines
+		float m, c;
+
+		//store minimum length for lines to be considered while estimating vanishing point
+		int minlength;
+
+		//store (x1, y1) and (x2, y2) endpoints for each line segment
+		vector<cv::Vec4i> lines_std;
+		std::vector<line::Line> linesVector;
+
+		//to store intermediate errors
+		double temperr;
+
+		void init(cv::Mat image)
+		{
+			linesDetector(image);
+			
+			//cout<<"Detected:"<<lines_std.size()<<endl;
+			//cout<<"Filtered:"<<points.size()<<endl;
+			//paint_lines(paint_lines_img, lines_std, "PaintLinesVP");
 		}
 
 		void makeLines(int flag)
@@ -189,8 +203,6 @@ namespace VP
 					}
 				}
 			}
-
-			paint_vp(paint_lines_img, getVP(), "VP");
 
 			//flush the vector
 			points.clear();

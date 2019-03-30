@@ -55,6 +55,8 @@ namespace line
   inline LineEquation::LineEquation(Line line)
   {
 	  m_line = line;
+	  calculateSlope();
+	  calculateEcuationParameters();
   }
 
   inline LineEquation::LineEquation()

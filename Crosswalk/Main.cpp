@@ -69,9 +69,35 @@ void VanishingPoint()
 	cout << "\n\nResult:\n" << p.x() << "," << p.y() << "\nError:";
 }
 
+
+void findCross()
+{
+	cv::String path("./crosswalk_images/testC.png");
+	cv::Mat img = cv::imread(path);
+	hough::Hough H;
+	H.setImage(img);
+	std::vector<line::Line> linesVectorHough = H.probabilisticHoughLines('1');
+
+	VP::vanishingPt obj;
+	std::vector<line::Line> linesVP = obj.getLines();
+
+	paint_lines(img, linesVP, "linesPAintedFinalVP");
+   // paint_lines(img, linesVectorHough, "linesPAintedFinalHough");
+	paint_vp(img, obj.getVP(), "VP");
+
+	cross::Crosswalk C(H.image(), linesVectorHough);
+
+	//Caut linii pe care le aflu fie cu hough fix cu aia din vp
+	//line::LineEquation(de liniile de mai sus aflate)
+	//apoi aflu vp 
+	//si apoi dintre liniile pt care le am, vad linia a carei ecuatie e verificata de vp-ul aflat
+	//liniile alea le pastrez ca facand parte din cross
+}
+
 int main()
 {
-	VanishingPoint();
+	findCross();
+	//VanishingPoint();
 	//cv::destroyAllWindows();
 	//ProbHoughTest();
 	//HoughTest();
