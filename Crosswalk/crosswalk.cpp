@@ -48,6 +48,22 @@ std::vector<line::Line> cross::Crosswalk::getCrossWalkLines()
 		return std::vector<line::Line> {0};
 }
 
+int cross::Crosswalk::findLinesWithTheSameVP()
+{
+	int howManyValues = 0;
+	std::vector<line::LineEquation>::iterator it;
+	for (it = m_lineEcuation.begin(); it != m_lineEcuation.end(); it++) {
+		float euqation = it->getParam_a() * m_vanishingPoint.x() + it->getParam_b() * m_vanishingPoint.y() + it->getParam_c();
+		float result = 0.0f;
+		if (std::abs(euqation - result) < 0.1f)
+		{
+			m_CrossWalkLines.push_back(it->getLine());
+			howManyValues++;
+		}
+	}
+	return howManyValues;
+}
+
 bool cross::Crosswalk::findCrosswalkInImage()
 {
 	bool isFound = false;
@@ -71,8 +87,9 @@ bool cross::Crosswalk::findCrosswalkInImage()
 			<< ": x= " << itMap->second.pointEnd().x() << " y= " << itMap->second.pointEnd().y() << "\n";
 	}
 
-	cv::Mat binary;
-	cv::threshold(m_picture, binary, 128, 255, cv::THRESH_BINARY);
+	cv::Mat binary(m_picture);
+	cv::cvtColor(binary, binary, cv::COLOR_BGR2GRAY);
+	cv::threshold(binary, binary, 128, 255, cv::THRESH_BINARY);
 
 	std::string imageName = "Threshold";
 

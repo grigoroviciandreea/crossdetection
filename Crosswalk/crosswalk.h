@@ -9,27 +9,29 @@ namespace cross
   public:
 	inline Crosswalk();
     inline Crosswalk(cv::Mat picture, std::vector<line::Line> lines);
-	inline Crosswalk(cv::Mat picture, std::vector<line::Line> lines, std::vector<line::LineEquation> m_lineEcuation);
+	inline Crosswalk(cv::Mat picture, std::vector<line::Line> lines, std::vector<line::LineEquation> m_lineEcuation, point::Point vanishing_point);
     void printLines();
 	cv::Mat Vdisparity(cv::Mat ImgToProcess, int max_disp);
 	void saveLines(std::string path);
 	void drawLinesOnImage(char i);
 	bool findCrosswalkInImage();
+	int findLinesWithTheSameVP();
 	std::vector<line::Line> getCrossWalkLines();
   private:
     cv::Mat m_picture; //type image
     std::vector<line::Line> m_lines; //type Line
 	std::vector<line::LineEquation> m_lineEcuation; //type LineEq
-
+	point::Point m_vanishingPoint;
 	std::vector<line::Line> m_CrossWalkLines; //basically what I need
   };
 
-  inline Crosswalk::Crosswalk(cv::Mat picture, std::vector<line::Line> lines, std::vector<line::LineEquation> lineEcuation)
+  inline Crosswalk::Crosswalk(cv::Mat picture, std::vector<line::Line> lines, std::vector<line::LineEquation> lineEcuation, point::Point vanishingPoint)
   {
 	  m_picture = picture;
 	  m_lines.swap(lines);
 	  m_lineEcuation.swap(lineEcuation);
 	  m_CrossWalkLines.swap(lines);
+	  m_vanishingPoint = vanishingPoint;
   }
   inline Crosswalk::Crosswalk(cv::Mat picture, std::vector<line::Line> lines)
   {

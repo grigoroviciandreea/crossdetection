@@ -37,7 +37,22 @@ void paint_vp(cv::Mat image, point::Point vp, std::string name)
 {
 	// draw a circle to visualize the approximate vanishing point
 	if (vp.x() > 0 && vp.x() < image.cols && vp.y() > 0 && vp.y() < image.rows)
-		cv::circle(image, cv::Point(vp.x(), vp.y()), 20, cv::Scalar(0, 0, 255), 10);
+		cv::circle(image, cv::Point(vp.x(), vp.y()), 5, cv::Scalar(0, 0, 255), 10);
 
 	cv::imshow(name, image);
+}
+
+std::vector<line::LineEquation> getLineEqVectorFromLineVector(std::vector<line::Line> lineVector)
+{
+	std::vector<line::LineEquation> lineEqVector;
+	if (lineVector.size() > 0)
+	{
+		// paint detected lines
+		for (size_t i = 0; i < lineVector.size(); i++)
+		{
+			line::LineEquation eq(lineVector[i]);
+			lineEqVector.push_back(eq);
+		}
+	}
+	return lineEqVector;
 }

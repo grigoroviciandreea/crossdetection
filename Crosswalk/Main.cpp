@@ -79,15 +79,24 @@ void findCross()
 	std::vector<line::Line> linesVectorHough = H.probabilisticHoughLines('1');
 
 	VP::vanishingPt obj;
-	std::vector<line::Line> linesVP = obj.getLines();
+	std::vector<line::Line> linesVectorVP = obj.getLines();
+	point::Point vanishingPoint = obj.getVP();
 
-	paint_lines(img, linesVP, "linesPAintedFinalVP");
+	std::vector<line::LineEquation>  lineEqVectorHough = getLineEqVectorFromLineVector(linesVectorHough);
+	std::vector<line::LineEquation>  lineEqVectorVP= getLineEqVectorFromLineVector(linesVectorVP);
+
+
+	paint_lines(img, linesVectorVP, "linesPAintedFinalVP");
    // paint_lines(img, linesVectorHough, "linesPAintedFinalHough");
 	paint_vp(img, obj.getVP(), "VP");
 
-	cross::Crosswalk C(H.image(), linesVectorHough);
+	//cross::Crosswalk C(H.image(), linesVectorHough, lineEqVectorHough, vanishingPoint);
+	//C.findCrosswalkInImage();
 
-	//Caut linii pe care le aflu fie cu hough fix cu aia din vp
+	cross::Crosswalk C2(H.image(), linesVectorVP, lineEqVectorVP, vanishingPoint);
+	//C2.findCrosswalkInImage();
+	cout << C2.findLinesWithTheSameVP();
+	//Caut linii pe care le aflu fie cu hough fie cu aia din vp
 	//line::LineEquation(de liniile de mai sus aflate)
 	//apoi aflu vp 
 	//si apoi dintre liniile pt care le am, vad linia a carei ecuatie e verificata de vp-ul aflat

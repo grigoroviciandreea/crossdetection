@@ -14,9 +14,6 @@ namespace VP
 	public:
 		vanishingPt()
 		{
-			cv::namedWindow("win", 1);
-			cv::namedWindow("Lines", 1);
-
 			int flag = 0;
 
 			image = cv::imread("./crosswalk_images/testC.png", CV_LOAD_IMAGE_UNCHANGED);   // Read the file

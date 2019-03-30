@@ -10,3 +10,4 @@ void paint_lines(cv::Mat, std::vector<line::Line>, std::string);
 
 void paint_vp(cv::Mat, point::Point, std::string);
 
+std::vector<line::LineEquation> getLineEqVectorFromLineVector(std::vector<line::Line>);
