@@ -89,8 +89,9 @@ bool cross::Crosswalk::findCrosswalkInImage()
 
 	cv::Mat binary(m_picture);
 	cv::cvtColor(binary, binary, cv::COLOR_BGR2GRAY);
-	cv::threshold(binary, binary, 128, 255, cv::THRESH_BINARY);
+	cv::threshold(binary, binary, 100, 255, cv::THRESH_BINARY);
 
+	cv::floodFill(binary, cv::Point(0, 0), Scalar(255));
 	std::string imageName = "Threshold";
 
 	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);// Create a window for display.

@@ -12,15 +12,16 @@ namespace VP
 	class vanishingPt
 	{
 	public:
-		vanishingPt()
+		vanishingPt(cv::Mat im)
 		{
 			int flag = 0;
 
-			image = cv::imread("./crosswalk_images/testC.png", CV_LOAD_IMAGE_UNCHANGED);   // Read the file
+			im.copyTo(image);
+		//	image = cv::imread("./crosswalk_images/testC.png", CV_LOAD_IMAGE_UNCHANGED);   // Read the file
 			image.copyTo(paint_lines_img);
-
+			
 			// define minimum length requirement for any line
-			minlength = static_cast<int>(image.cols * image.rows * 0.001F);
+			minlength = static_cast<int>(image.cols * image.rows * 0.0001F);
 
 			cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);
 
@@ -69,10 +70,13 @@ namespace VP
 			for (int i = 0; i<lines_std.size(); i++)
 			{
 				//ignore if almost vertical
-				if (abs(lines_std[i][0] - lines_std[i][2]) < 10 || abs(lines_std[i][1] - lines_std[i][3]) < 10) //check if almost vertical
+				if (abs(lines_std[i][0] - lines_std[i][2]) < 4 || abs(lines_std[i][1] - lines_std[i][3]) < 4) //check if almost vertical
 					continue;
 				//ignore shorter lines (x1-x2)^2 + (y2-y1)^2 < minlength
 				if (((lines_std[i][0] - lines_std[i][2])*(lines_std[i][0] - lines_std[i][2]) + (lines_std[i][1] - lines_std[i][3])*(lines_std[i][1] - lines_std[i][3])) < minlength)
+					continue;
+				//ignore if to up, above horizon
+				if (lines_std[i][1] < 200 || lines_std[i][3] < 200)
 					continue;
 
 				//store valid lines' endpoints for calculations 

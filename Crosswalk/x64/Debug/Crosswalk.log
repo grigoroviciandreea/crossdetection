@@ -1,7 +1,10 @@
-﻿  helperFunctions.cpp
+﻿  crosswalk.cpp
 CL : warning : detected 'min' and/or 'max' macros and undefined them;
 CL : warning : you may wish to define NOMINMAX before including any windows header
-f:\master\repo_cross\crossdetection\crosswalk\helperfunctions.cpp(29): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-f:\master\repo_cross\crossdetection\crosswalk\helperfunctions.cpp(40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(44): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(45): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(91): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(128): warning C4267: 'argument': conversion from 'size_t' to 'const arma::uword', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(129): warning C4267: 'argument': conversion from 'size_t' to 'const arma::uword', possible loss of data
   Crosswalk.vcxproj -> F:\master\repo_cross\crossdetection\Crosswalk\x64\Debug\Crosswalk.exe
   Crosswalk.vcxproj -> F:\master\repo_cross\crossdetection\Crosswalk\x64\Debug\Crosswalk.pdb (Partial PDB)

@@ -43,7 +43,7 @@ std::vector<line::Line> hough::Hough::houghLines(char i) {
 		}
 	}
 
-	//paint_lines(result, lines, "Hough");
+	paint_lines(result, lines, "Hough");
 	return finalLines;
 }
 
@@ -71,7 +71,7 @@ std::vector<line::Line> hough::Hough::probabilisticHoughLines(char i) {
 		}
 	}
 
-	//paint_lines(result, lines, "HoughProb");
+	paint_lines(result, lines, "HoughProb");
 	return finalLines;
 }
 

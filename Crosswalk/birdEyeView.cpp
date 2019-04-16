@@ -38,11 +38,14 @@ cv::Mat BEV::BirdEyeView::computeBirdEyeView()
 cv::Mat BEV::BirdEyeView::computeBirdEyeViewforImg()
 {
 	cv::Mat BEV;
-	cv::Mat src = cv::imread("./crosswalk_images/testC.png");
+	cv::Mat src = this->m_image;
+	//alpha pitch, gamma roll, azimuth beta --> incercarile mele de atunci
+	//pe net zice: roll = gamma, pitch - beta, azimuth alpha (sau alta sursa zice azimuth gamma)
 
-	int alpha_ = -75, beta_ = -50, gamma_ = 13;
+	//ultim data si o mers bine: --- alpha = roll = 18 --- beta = pitch = -83 --- gamma = azim = 107 pt trec3
+	int alpha_ = 18, beta_ = 83, gamma_ = 97;
 	int f_ = 426; //4.26 mm inainte: 560
-    int dist_ = 700; 
+    int dist_ = 600; 
 
 	double w = (double)src.size().width, h = (double)src.size().height;
 	double focalLength, dist, alpha, beta, gamma;
@@ -113,9 +116,9 @@ cv::Mat BEV::BirdEyeView::computeBirdEyeViewforImg()
 	cv::Mat dst(src.size().height, src.size().width, CV_8UC3);
 	warpPerspective(src, dst, M, dst.size(), cv::INTER_LINEAR, cv::BORDER_CONSTANT);
 
-	//cv::imshow("src", src);
-	//cv::imshow("dst", dst);
-	cv::imwrite("testSRC.jpg", src);
-	cv::imwrite("testDST.jpg", dst);
+	cv::imshow("src", src);
+	cv::imshow("dst", dst);
+	//cv::imwrite("testSRC.jpg", src);
+	//cv::imwrite("testDST.jpg", dst);
 	return BEV;
 }
