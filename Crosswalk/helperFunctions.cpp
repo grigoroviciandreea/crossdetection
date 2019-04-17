@@ -1,5 +1,10 @@
 #include"helperFunctions.h"
 
+void print_image(cv::Mat image, cv::String name)
+{
+	cv::imwrite(name, image);
+}
+
 void paint_lines(cv::Mat image, std::vector<cv::Vec4i> lines, std::string name)
 {
 	cv::Mat result(image);
@@ -33,13 +38,15 @@ void paint_lines(cv::Mat image, std::vector<line::Line> lines, std::string name)
 	imshow(name, result);
 }
 
-void paint_vp(cv::Mat image, point::Point vp, std::string name)
+cv::Mat paint_vp(cv::Mat image, point::Point vp, std::string name)
 {
 	// draw a circle to visualize the approximate vanishing point
 	if (vp.x() > 0 && vp.x() < image.cols && vp.y() > 0 && vp.y() < image.rows)
 		cv::circle(image, cv::Point(vp.x(), vp.y()), 5, cv::Scalar(0, 0, 255), 10);
 
 	cv::imshow(name, image);
+
+	return image;
 }
 
 std::vector<line::LineEquation> getLineEqVectorFromLineVector(std::vector<line::Line> lineVector)

@@ -1,4 +1,4 @@
-﻿  crosswalk.cpp
+﻿  Main.cpp
 CL : warning : detected 'min' and/or 'max' macros and undefined them;
 CL : warning : you may wish to define NOMINMAX before including any windows header
 f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(44): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data

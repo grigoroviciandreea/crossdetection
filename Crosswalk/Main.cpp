@@ -41,10 +41,12 @@ bool saveLinesForManyImages()
 cv::Mat ComputeBirdEyeView()
 {
 	//http://answers.opencv.org/question/174548/inverse-perspective-mapping-ipm-on-the-capture-from-camera-feed/
-	cv::String path("./crosswalk_images/trec4.png");
+	cv::String path("./crosswalk_images/trec3.png");
 	cv::Mat img = cv::imread(path);
 	BEV::BirdEyeView birdEyeView(img);
 	cv::Mat output = birdEyeView.computeBirdEyeViewforImg();
+
+	print_image(output, cv::String("./output_images/trec3_BEV.png"));
 	return output;
 }
 
@@ -76,7 +78,7 @@ void VanishingPoint()
 
 void findCross()
 {
-	cv::String path("./crosswalk_images/trec4.png");
+	cv::String path("./crosswalk_images/trec3.png");
 	cv::Mat img = cv::imread(path);
 	VP::vanishingPt obj(img);
 	hough::Hough H;
@@ -93,7 +95,9 @@ void findCross()
 
 	paint_lines(img, linesVectorVP, "linesPAintedFinalVP");
    // paint_lines(img, linesVectorHough, "linesPAintedFinalHough");
-	paint_vp(img, obj.getVP(), "VP");
+	cv::Mat out_img = paint_vp(img, obj.getVP(), "VP");
+
+	print_image(out_img, cv::String("./output_images/trec3_VP.png"));
 
 	//cross::Crosswalk C(H.image(), linesVectorHough, lineEqVectorHough, vanishingPoint);
 	//C.findCrosswalkInImage();
@@ -110,12 +114,12 @@ void findCross()
 
 int main()
 {
-//	findCross();
+	findCross();
 	//VanishingPoint();
 	//cv::destroyAllWindows();
-	ProbHoughTest();
-	HoughTest();
-	//ComputeBirdEyeView();
+	//ProbHoughTest();
+	//HoughTest();
+	ComputeBirdEyeView();
 	cv::waitKey(0);
 	return 0;
 }

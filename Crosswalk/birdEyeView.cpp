@@ -37,7 +37,6 @@ cv::Mat BEV::BirdEyeView::computeBirdEyeView()
 
 cv::Mat BEV::BirdEyeView::computeBirdEyeViewforImg()
 {
-	cv::Mat BEV;
 	cv::Mat src = this->m_image;
 	//alpha pitch, gamma roll, azimuth beta --> incercarile mele de atunci
 	//pe net zice: roll = gamma, pitch - beta, azimuth alpha (sau alta sursa zice azimuth gamma)
@@ -113,12 +112,11 @@ cv::Mat BEV::BirdEyeView::computeBirdEyeViewforImg()
 	cv::Mat M = K * (T * (R * A1));
 
 
-	cv::Mat dst(src.size().height, src.size().width, CV_8UC3);
-	warpPerspective(src, dst, M, dst.size(), cv::INTER_LINEAR, cv::BORDER_CONSTANT);
+	cv::Mat BEV(src.size().height, src.size().width, CV_8UC3);
+	warpPerspective(src, BEV, M, BEV.size(), cv::INTER_LINEAR, cv::BORDER_CONSTANT);
 
 	cv::imshow("src", src);
-	cv::imshow("dst", dst);
-	//cv::imwrite("testSRC.jpg", src);
-	//cv::imwrite("testDST.jpg", dst);
+	cv::imshow("dst", BEV);
+
 	return BEV;
 }
