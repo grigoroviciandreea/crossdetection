@@ -76,9 +76,15 @@ namespace VP
 				if (((lines_std[i][0] - lines_std[i][2])*(lines_std[i][0] - lines_std[i][2]) + (lines_std[i][1] - lines_std[i][3])*(lines_std[i][1] - lines_std[i][3])) < minlength)
 					continue;
 				//ignore if to up, above horizon
-				if (lines_std[i][1] < 200 || lines_std[i][3] < 200)
-					continue;
 
+				//===================================
+				//pt imaginle care o fost facut incat se vede capota =  <  250 si >  -200
+				// pt imaginile unde nu se vede capota = <200 si >-100 sau mai putin depinde
+				//===================================
+				if (lines_std[i][1] < 250 || lines_std[i][3] < 250)
+					continue;
+				if (lines_std[i][1] > (image.rows - 200) || lines_std[i][3] >  (image.rows - 200))
+					continue;
 				//store valid lines' endpoints for calculations 
 				//only points is used for calculate VP
 				for (int j = 0; j<4; j++)
@@ -90,6 +96,8 @@ namespace VP
 				temp.clear();
 				linesVector.push_back(line::Line(point::Point(lines_std[i][0], lines_std[i][1]), point::Point(lines_std[i][2], lines_std[i][3])));
 			}
+
+			//aceeasi treaba sa fac pt hough sa vad rez care is mai bune 
 
 		}
 	private:

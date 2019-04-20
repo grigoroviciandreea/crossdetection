@@ -78,7 +78,7 @@ void VanishingPoint()
 
 void findCross()
 {
-	cv::String path("./crosswalk_images/trec3.png");
+	cv::String path("./crosswalk_images/trec4.png");
 	cv::Mat img = cv::imread(path);
 	VP::vanishingPt obj(img);
 	hough::Hough H;
@@ -119,7 +119,7 @@ int main()
 	//cv::destroyAllWindows();
 	//ProbHoughTest();
 	//HoughTest();
-	ComputeBirdEyeView();
+	//ComputeBirdEyeView();
 	cv::waitKey(0);
 	return 0;
 }

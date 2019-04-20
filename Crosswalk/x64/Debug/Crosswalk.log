@@ -3,8 +3,27 @@ CL : warning : detected 'min' and/or 'max' macros and undefined them;
 CL : warning : you may wish to define NOMINMAX before including any windows header
 f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(44): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(45): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(91): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(128): warning C4267: 'argument': conversion from 'size_t' to 'const arma::uword', possible loss of data
-f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(129): warning C4267: 'argument': conversion from 'size_t' to 'const arma::uword', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(97): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(136): warning C4267: 'argument': conversion from 'size_t' to 'const arma::uword', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(137): warning C4267: 'argument': conversion from 'size_t' to 'const arma::uword', possible loss of data
+  Generating Code...
+  Compiling...
+  vanishingPoint.cpp
+CL : warning : detected 'min' and/or 'max' macros and undefined them;
+CL : warning : you may wish to define NOMINMAX before including any windows header
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(44): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(45): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(97): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(136): warning C4267: 'argument': conversion from 'size_t' to 'const arma::uword', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(137): warning C4267: 'argument': conversion from 'size_t' to 'const arma::uword', possible loss of data
+  crosswalk.cpp
+CL : warning : detected 'min' and/or 'max' macros and undefined them;
+CL : warning : you may wish to define NOMINMAX before including any windows header
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(44): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(45): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(97): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(136): warning C4267: 'argument': conversion from 'size_t' to 'const arma::uword', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(137): warning C4267: 'argument': conversion from 'size_t' to 'const arma::uword', possible loss of data
+  Generating Code...
   Crosswalk.vcxproj -> F:\master\repo_cross\crossdetection\Crosswalk\x64\Debug\Crosswalk.exe
   Crosswalk.vcxproj -> F:\master\repo_cross\crossdetection\Crosswalk\x64\Debug\Crosswalk.pdb (Partial PDB)
