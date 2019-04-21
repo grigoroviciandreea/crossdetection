@@ -42,7 +42,7 @@ cv::Mat paint_vp(cv::Mat image, point::Point vp, std::string name)
 {
 	// draw a circle to visualize the approximate vanishing point
 	if (vp.x() > 0 && vp.x() < image.cols && vp.y() > 0 && vp.y() < image.rows)
-		cv::circle(image, cv::Point(vp.x(), vp.y()), 5, cv::Scalar(0, 0, 255), 10);
+		cv::circle(image, cv::Point(vp.x(), vp.y()), 5, cv::Scalar(0, 255, 255), 10);
 
 	cv::imshow(name, image);
 

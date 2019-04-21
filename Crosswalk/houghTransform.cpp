@@ -58,7 +58,7 @@ std::vector<line::Line> hough::Hough::probabilisticHoughLines(char i) {
 	houghLinesSrc = cannyResult(i);
 	//houghLinesSrc = sobelResult(i);
 	std::vector<cv::Vec4i> lines;
-	HoughLinesP(houghLinesSrc, lines, 1, CV_PI / 180, 10, 20, 160);
+	HoughLinesP(houghLinesSrc, lines, 1, CV_PI / 180, 10, 20, 70);
 	
 	finalLines.resize(lines.size());
 	if (lines.size() > 0)
@@ -71,7 +71,7 @@ std::vector<line::Line> hough::Hough::probabilisticHoughLines(char i) {
 		}
 	}
 
-	paint_lines(result, lines, "HoughProb");
+	paint_lines(result, finalLines, "HoughProb");
 	return finalLines;
 }
 

@@ -83,13 +83,13 @@ void findCross()
 	VP::vanishingPt obj(img);
 	hough::Hough H;
 	H.setImage(img);
-	std::vector<line::Line> linesVectorHough = H.probabilisticHoughLines('1');
+	//std::vector<line::Line> linesVectorHough = H.probabilisticHoughLines('1');
 
 	
 	std::vector<line::Line> linesVectorVP = obj.getLines();
 	point::Point vanishingPoint = obj.getVP();
 
-	std::vector<line::LineEquation>  lineEqVectorHough = getLineEqVectorFromLineVector(linesVectorHough);
+	//std::vector<line::LineEquation>  lineEqVectorHough = getLineEqVectorFromLineVector(linesVectorHough);
 	std::vector<line::LineEquation>  lineEqVectorVP= getLineEqVectorFromLineVector(linesVectorVP);
 
 

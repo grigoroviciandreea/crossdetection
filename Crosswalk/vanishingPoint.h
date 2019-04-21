@@ -23,11 +23,6 @@ namespace VP
 			// define minimum length requirement for any line
 			minlength = static_cast<int>(image.cols * image.rows * 0.0001F);
 
-			cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);
-
-			//equalize histogram
-			cv::equalizeHist(image, image);
-
 			//initialize the line segment matrix in format y = m*x + c	
 			init(image);
 
@@ -54,6 +49,11 @@ namespace VP
 
 		void linesDetector(cv::Mat image)
 		{
+			cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);
+
+			//equalize histogram
+			cv::equalizeHist(image, image);
+
 			//create OpenCV object for line segment detection
 			cv::Ptr<cv::LineSegmentDetector> ls = cv::createLineSegmentDetector(cv::LSD_REFINE_STD);
 
@@ -73,10 +73,11 @@ namespace VP
 				if (abs(lines_std[i][0] - lines_std[i][2]) < 4 || abs(lines_std[i][1] - lines_std[i][3]) < 4) //check if almost vertical
 					continue;
 				//ignore shorter lines (x1-x2)^2 + (y2-y1)^2 < minlength
-				if (((lines_std[i][0] - lines_std[i][2])*(lines_std[i][0] - lines_std[i][2]) + (lines_std[i][1] - lines_std[i][3])*(lines_std[i][1] - lines_std[i][3])) < minlength)
+				if (((lines_std[i][0] - lines_std[i][2])*(lines_std[i][0] - lines_std[i][2]) + 
+					(lines_std[i][1] - lines_std[i][3])*(lines_std[i][1] - lines_std[i][3])) < minlength)
 					continue;
-				//ignore if to up, above horizon
 
+				//ignore if to up, above horizon
 				//===================================
 				//pt imaginle care o fost facut incat se vede capota =  <  250 si >  -200
 				// pt imaginile unde nu se vede capota = <200 si >-100 sau mai putin depinde
@@ -96,9 +97,40 @@ namespace VP
 				temp.clear();
 				linesVector.push_back(line::Line(point::Point(lines_std[i][0], lines_std[i][1]), point::Point(lines_std[i][2], lines_std[i][3])));
 			}
+		}
 
-			//aceeasi treaba sa fac pt hough sa vad rez care is mai bune 
+		void linesDetectorHough(cv::Mat image)
+		{
+			//temporary vector for intermediate storage
+			vector<int> temp;
 
+			hough::Hough H;
+			H.setImage(image);
+			std::vector<line::Line> linesVectorHough = H.probabilisticHoughLines('1');
+
+			for (int i = 0; i < linesVectorHough.size(); i++)
+			{
+				if (abs(linesVectorHough[i].pointStart().x() - linesVectorHough[i].pointEnd().x()) < 4 ||
+					abs(linesVectorHough[i].pointStart().y() - linesVectorHough[i].pointEnd().y()) < 4) //check if almost vertical
+					continue;
+				if (((linesVectorHough[i].pointStart().x() - linesVectorHough[i].pointEnd().x()) *
+					(linesVectorHough[i].pointStart().x() - linesVectorHough[i].pointEnd().x()) +
+					(linesVectorHough[i].pointStart().y() - linesVectorHough[i].pointEnd().y()) *
+					(linesVectorHough[i].pointStart().y() - linesVectorHough[i].pointEnd().y())) < minlength)
+					continue;
+				/*	if (linesVectorHough[i].pointStart().x() < 250 || linesVectorHough[i].pointEnd().x() < 250)
+				continue;
+				if (linesVectorHough[i].pointStart().x() > (image.rows - 200) || linesVectorHough[i].pointEnd().x() >  (image.rows - 200))
+				continue;*/
+				temp.push_back(linesVectorHough[i].pointStart().x());
+				temp.push_back(linesVectorHough[i].pointStart().y());
+				temp.push_back(linesVectorHough[i].pointEnd().x());
+				temp.push_back(linesVectorHough[i].pointEnd().y());
+
+				points.push_back(temp);
+				temp.clear();
+				linesVector.push_back(linesVectorHough[i]);
+			}
 		}
 	private:
 		cv::Mat image;
@@ -123,7 +155,7 @@ namespace VP
 
 		void init(cv::Mat image)
 		{
-			linesDetector(image);
+			linesDetectorHough(image);
 			
 			//cout<<"Detected:"<<lines_std.size()<<endl;
 			//cout<<"Filtered:"<<points.size()<<endl;

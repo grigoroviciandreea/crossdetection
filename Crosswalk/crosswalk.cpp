@@ -55,7 +55,7 @@ int cross::Crosswalk::findLinesWithTheSameVP()
 	for (it = m_lineEcuation.begin(); it != m_lineEcuation.end(); it++) {
 		float euqation = it->getParam_a() * m_vanishingPoint.x() + it->getParam_b() * m_vanishingPoint.y() + it->getParam_c();
 		float result = 0.0f;
-		if (std::abs(euqation - result) < 0.1f)
+		if (std::abs(euqation - result) < 2.1f)
 		{
 			m_CrossWalkLines.push_back(it->getLine());
 			howManyValues++;
