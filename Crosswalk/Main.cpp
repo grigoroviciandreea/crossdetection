@@ -53,24 +53,25 @@ cv::Mat ComputeBirdEyeView()
 void ProbHoughTest()
 {
 	hough::Hough H;
-	H.readImage("./crosswalk_images/trec3.png");
+	H.readImage("./crosswalk_images/trec5.png");
 	cross::Crosswalk C(H.image(), H.probabilisticHoughLines('1'));
-	C.findCrosswalkInImage();
+	C.findParallelLinesInImage();
 }
 
 void HoughTest()
 {
 	hough::Hough H;
-	H.readImage("./crosswalk_images/trec3.png");
+	H.readImage("./crosswalk_images/trec5.png");
 	cross::Crosswalk C(H.image(), H.houghLines('1'));
-	C.findCrosswalkInImage();
+	C.findParallelLinesInImage();
 }
 
 void VanishingPoint()
 {
 	cv::String path("./crosswalk_images/trec3.png");
 	cv::Mat img = cv::imread(path);
-	VP::vanishingPt obj(img);
+	int mode = 1; //1 - for Detect with Hough; 2 - for detect clasic 
+	VP::vanishingPt obj(img, mode);
 	point::Point p = obj.getVP();
 	cout << "\n\nResult:\n" << p.x() << "," << p.y() << "\nError:";
 }
@@ -78,19 +79,26 @@ void VanishingPoint()
 
 void findCross()
 {
-	cv::String path("./crosswalk_images/trec4.png");
+	cv::String path("./crosswalk_images/trec3.png");
 	cv::Mat img = cv::imread(path);
-	VP::vanishingPt obj(img);
+	int mode = 1; //1 - for Detect with Hough; 2 - for detect clasic 
+	VP::vanishingPt obj(img, mode);
+	cv::Mat crossImg;
+
+	img.copyTo(crossImg);
+
 	hough::Hough H;
 	H.setImage(img);
-	//std::vector<line::Line> linesVectorHough = H.probabilisticHoughLines('1');
-
 	
+	//asta imi da toate liniile
+	std::vector<line::Line> linesVectorHough = H.probabilisticHoughLines('1');
+	
+	// asta imi da doar liniile pe care le fol pt vp
 	std::vector<line::Line> linesVectorVP = obj.getLines();
 	point::Point vanishingPoint = obj.getVP();
 
 	//std::vector<line::LineEquation>  lineEqVectorHough = getLineEqVectorFromLineVector(linesVectorHough);
-	std::vector<line::LineEquation>  lineEqVectorVP= getLineEqVectorFromLineVector(linesVectorVP);
+	std::vector<line::LineEquation>  lineEqVectorVP= getLineEqVectorFromLineVector(linesVectorHough);
 
 
 	paint_lines(img, linesVectorVP, "linesPAintedFinalVP");
@@ -102,9 +110,13 @@ void findCross()
 	//cross::Crosswalk C(H.image(), linesVectorHough, lineEqVectorHough, vanishingPoint);
 	//C.findCrosswalkInImage();
 
-	cross::Crosswalk C2(H.image(), linesVectorVP, lineEqVectorVP, vanishingPoint);
+	cross::Crosswalk C2(H.image(), linesVectorHough, lineEqVectorVP, vanishingPoint);
 	//C2.findCrosswalkInImage();
 	cout << C2.findLinesWithTheSameVP();
+	std::vector<line::Line> linesVectorCrossWalk = C2.getCrossWalkLines();
+
+	paint_lines(crossImg, linesVectorCrossWalk, "linesPAintedFinalCrosswalk");
+
 	//Caut linii pe care le aflu fie cu hough fie cu aia din vp
 	//line::LineEquation(de liniile de mai sus aflate)
 	//apoi aflu vp 

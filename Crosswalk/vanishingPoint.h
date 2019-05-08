@@ -12,7 +12,7 @@ namespace VP
 	class vanishingPt
 	{
 	public:
-		vanishingPt(cv::Mat im)
+		vanishingPt(cv::Mat im, int m)
 		{
 			int flag = 0;
 
@@ -23,6 +23,7 @@ namespace VP
 			// define minimum length requirement for any line
 			minlength = static_cast<int>(image.cols * image.rows * 0.0001F);
 
+			mode = m;
 			//initialize the line segment matrix in format y = m*x + c	
 			init(image);
 
@@ -82,7 +83,7 @@ namespace VP
 				//pt imaginle care o fost facut incat se vede capota =  <  250 si >  -200
 				// pt imaginile unde nu se vede capota = <200 si >-100 sau mai putin depinde
 				//===================================
-				if (lines_std[i][1] < 250 || lines_std[i][3] < 250)
+				if (lines_std[i][1] < 350 || lines_std[i][3] < 350)
 					continue;
 				if (lines_std[i][1] > (image.rows - 200) || lines_std[i][3] >  (image.rows - 200))
 					continue;
@@ -110,18 +111,18 @@ namespace VP
 
 			for (int i = 0; i < linesVectorHough.size(); i++)
 			{
-				if (abs(linesVectorHough[i].pointStart().x() - linesVectorHough[i].pointEnd().x()) < 4 ||
-					abs(linesVectorHough[i].pointStart().y() - linesVectorHough[i].pointEnd().y()) < 4) //check if almost vertical
+				if (abs(linesVectorHough[i].pointStart().x() - linesVectorHough[i].pointEnd().x()) < 80 ||
+					abs(linesVectorHough[i].pointStart().y() - linesVectorHough[i].pointEnd().y()) < 8) //check if almost vertical
 					continue;
 				if (((linesVectorHough[i].pointStart().x() - linesVectorHough[i].pointEnd().x()) *
 					(linesVectorHough[i].pointStart().x() - linesVectorHough[i].pointEnd().x()) +
 					(linesVectorHough[i].pointStart().y() - linesVectorHough[i].pointEnd().y()) *
 					(linesVectorHough[i].pointStart().y() - linesVectorHough[i].pointEnd().y())) < minlength)
 					continue;
-				/*	if (linesVectorHough[i].pointStart().x() < 250 || linesVectorHough[i].pointEnd().x() < 250)
-				continue;
-				if (linesVectorHough[i].pointStart().x() > (image.rows - 200) || linesVectorHough[i].pointEnd().x() >  (image.rows - 200))
-				continue;*/
+				if (linesVectorHough[i].pointStart().y() < 300 || linesVectorHough[i].pointEnd().y() < 300)
+					continue;
+				//if (linesVectorHough[i].pointStart().y() > (image.rows - 110) || linesVectorHough[i].pointEnd().y() >  (image.rows - 110))
+					//continue;
 				temp.push_back(linesVectorHough[i].pointStart().x());
 				temp.push_back(linesVectorHough[i].pointStart().y());
 				temp.push_back(linesVectorHough[i].pointEnd().x());
@@ -146,6 +147,8 @@ namespace VP
 		//store minimum length for lines to be considered while estimating vanishing point
 		int minlength;
 
+		int mode;
+
 		//store (x1, y1) and (x2, y2) endpoints for each line segment
 		vector<cv::Vec4i> lines_std;
 		std::vector<line::Line> linesVector;
@@ -155,7 +158,10 @@ namespace VP
 
 		void init(cv::Mat image)
 		{
-			linesDetectorHough(image);
+			if (mode == 1)
+				linesDetectorHough(image);
+			else if (mode == 2)
+				linesDetector(image);
 			
 			//cout<<"Detected:"<<lines_std.size()<<endl;
 			//cout<<"Filtered:"<<points.size()<<endl;

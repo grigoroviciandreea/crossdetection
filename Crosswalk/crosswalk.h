@@ -14,7 +14,7 @@ namespace cross
 	cv::Mat Vdisparity(cv::Mat ImgToProcess, int max_disp);
 	void saveLines(std::string path);
 	void drawLinesOnImage(char i);
-	bool findCrosswalkInImage();
+	bool findParallelLinesInImage();
 	int findLinesWithTheSameVP();
 	std::vector<line::Line> getCrossWalkLines();
   private:

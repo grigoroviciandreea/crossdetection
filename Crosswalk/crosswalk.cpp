@@ -41,11 +41,7 @@ void cross::Crosswalk::saveLines(std::string path)
 
 std::vector<line::Line> cross::Crosswalk::getCrossWalkLines()
 {
-	bool isFound = findCrosswalkInImage();
-	if (isFound)
-		return m_CrossWalkLines;
-	else
-		return std::vector<line::Line> {0};
+	return m_CrossWalkLines;
 }
 
 int cross::Crosswalk::findLinesWithTheSameVP()
@@ -55,7 +51,7 @@ int cross::Crosswalk::findLinesWithTheSameVP()
 	for (it = m_lineEcuation.begin(); it != m_lineEcuation.end(); it++) {
 		float euqation = it->getParam_a() * m_vanishingPoint.x() + it->getParam_b() * m_vanishingPoint.y() + it->getParam_c();
 		float result = 0.0f;
-		if (std::abs(euqation - result) < 2.1f)
+		if (std::abs(euqation - result) < 200.1f)
 		{
 			m_CrossWalkLines.push_back(it->getLine());
 			howManyValues++;
@@ -64,7 +60,7 @@ int cross::Crosswalk::findLinesWithTheSameVP()
 	return howManyValues;
 }
 
-bool cross::Crosswalk::findCrosswalkInImage()
+bool cross::Crosswalk::findParallelLinesInImage()
 {
 	bool isFound = false;
 	std::multimap<float, line::Line> mapLines;
