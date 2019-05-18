@@ -111,18 +111,16 @@ namespace VP
 
 			for (int i = 0; i < linesVectorHough.size(); i++)
 			{
-				if (abs(linesVectorHough[i].pointStart().x() - linesVectorHough[i].pointEnd().x()) < 80 ||
-					abs(linesVectorHough[i].pointStart().y() - linesVectorHough[i].pointEnd().y()) < 8) //check if almost vertical
+				if (abs(linesVectorHough[i].pointStart().x() - linesVectorHough[i].pointEnd().x()) < 10 ||
+					abs(linesVectorHough[i].pointStart().y() - linesVectorHough[i].pointEnd().y()) < 20) //check if almost vertical
 					continue;
 				if (((linesVectorHough[i].pointStart().x() - linesVectorHough[i].pointEnd().x()) *
 					(linesVectorHough[i].pointStart().x() - linesVectorHough[i].pointEnd().x()) +
 					(linesVectorHough[i].pointStart().y() - linesVectorHough[i].pointEnd().y()) *
 					(linesVectorHough[i].pointStart().y() - linesVectorHough[i].pointEnd().y())) < minlength)
 					continue;
-				if (linesVectorHough[i].pointStart().y() < 300 || linesVectorHough[i].pointEnd().y() < 300)
-					continue;
-				//if (linesVectorHough[i].pointStart().y() > (image.rows - 110) || linesVectorHough[i].pointEnd().y() >  (image.rows - 110))
-					//continue;
+				//if (linesVectorHough[i].pointStart().y() < 200 || linesVectorHough[i].pointEnd().y() < 200)
+				//	continue;
 				temp.push_back(linesVectorHough[i].pointStart().x());
 				temp.push_back(linesVectorHough[i].pointStart().y());
 				temp.push_back(linesVectorHough[i].pointEnd().x());
@@ -263,6 +261,8 @@ namespace VP
 			solve(x, A, b);
 			return x;
 		}
+
+
 	};
 
 

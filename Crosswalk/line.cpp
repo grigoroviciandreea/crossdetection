@@ -28,13 +28,23 @@ void line::LineEquation::calculateSlope()
 
 void line::LineEquation::calculateEcuationParameters()
 {
-	m_a = m_line.pointStart().x() - m_line.pointEnd().x();
-	m_b = m_line.pointEnd().y() - m_line.pointStart().y();
-	m_c = m_line.pointStart().x() * m_line.pointEnd().x() - m_line.pointStart().x() * m_line.pointStart().x() +
-		m_line.pointStart().y() * m_line.pointStart().y() - m_line.pointStart().y() * m_line.pointEnd().y();
+	m_a = m_line.pointStart().y() - m_line.pointEnd().y();
+	m_b = m_line.pointEnd().x() - m_line.pointStart().x();
+
+	m_c = m_line.pointStart().x() * m_line.pointEnd().y() - m_line.pointStart().y() * m_line.pointEnd().x();
 }
 
-float line::LineEquation::getSlope()
+double line::LineEquation::getDistanceFromPointToLine(point::Point P)
+{
+	double distance = 0.0F;
+	double absolute_val = 0.0F, sqrt_val = 0.0F;
+	absolute_val = std::abs(m_a * P.x() + m_b * P.y() + m_c);
+	sqrt_val = std::sqrt(m_a * m_a + m_b * m_b);
+	distance = absolute_val / sqrt_val;
+	return distance;
+}
+
+double line::LineEquation::getSlope()
 {
 	return m_slope;
 }
@@ -44,17 +54,17 @@ line::Line line::LineEquation::getLine()
 	return m_line;
 }
 
-float line::LineEquation::getParam_a()
+double line::LineEquation::getParam_a()
 {
 	return m_a;
 }
 
-float line::LineEquation::getParam_b()
+double line::LineEquation::getParam_b()
 {
 	return m_b;
 }
 
-float line::LineEquation::getParam_c()
+double line::LineEquation::getParam_c()
 {
 	return m_c;
 }

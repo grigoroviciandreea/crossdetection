@@ -22,6 +22,7 @@ namespace line
 	  m_pStart = p1;
 	  m_pEnd = p2;
   }
+
   inline Line::Line()
   {
 	  m_pStart = point::Point(0.0f, 0.0f);
@@ -40,21 +41,23 @@ namespace line
 	  void calculateSlope();  
 	  void calculateEcuationParameters();
 	  Line getLine();
-	  float getSlope();
-	  float getParam_a();
-	  float getParam_b();
-	  float getParam_c();
+	  double getSlope();
+	  double getParam_a();
+	  double getParam_b();
+	  double getParam_c();
+	  double getDistanceFromPointToLine(point::Point);
   private:
 	  Line m_line;
-	  float m_slope;  
-	  float m_a;
-	  float m_b;
-	  float m_c;
+	  double m_slope;
+	  double m_a;
+	  double m_b;
+	  double m_c;
   };
 
   inline LineEquation::LineEquation(Line line)
   {
 	  m_line = line;
+
 	  calculateSlope();
 	  calculateEcuationParameters();
   }

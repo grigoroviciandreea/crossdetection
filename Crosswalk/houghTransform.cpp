@@ -66,8 +66,16 @@ std::vector<line::Line> hough::Hough::probabilisticHoughLines(char i) {
 		for (size_t i = 0; i < lines.size(); i++)
 		{
 			cv::Vec4i l = lines[i];
-			finalLines[i].set_pointStart(point::Point((float)l[0], (float)l[1]));
-			finalLines[i].set_pointEnd(point::Point((float)l[2], (float)l[3]));
+			if ((float)l[1] < (float)l[3])
+			{
+				finalLines[i].set_pointStart(point::Point((float)l[0], (float)l[1]));
+				finalLines[i].set_pointEnd(point::Point((float)l[2], (float)l[3]));
+			}
+			else
+			{
+				finalLines[i].set_pointStart(point::Point((float)l[2], (float)l[3]));
+				finalLines[i].set_pointEnd(point::Point((float)l[0], (float)l[1]));
+			}
 		}
 	}
 
@@ -110,6 +118,15 @@ cv::Mat hough::Hough::cannyResult(char i) {
 	//  use image_blur instead of m_image 
 
 	cv::Canny(image_blur, image_canny, 30, 50, 3);
+
+	for (int x = 0; x < (image_canny.size().height - 400); x++)
+	{
+		for (int y = 0; y < image_canny.size().width; y++)
+		{
+			image_canny.at<uchar>(cv::Point(y, x)) = 0;
+
+		}
+	}
 
 	std::string imageName = "Canny Result" + std::string(1, i);
 

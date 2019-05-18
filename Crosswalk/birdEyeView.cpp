@@ -42,6 +42,9 @@ cv::Mat BEV::BirdEyeView::computeBirdEyeViewforImg()
 	//pe net zice: roll = gamma, pitch - beta, azimuth alpha (sau alta sursa zice azimuth gamma)
 
 	//ultim data si o mers bine: --- alpha = roll = 18 --- beta = pitch = -83 --- gamma = azim = 107 pt trec3
+
+	///roll sa il pun 0, pt pitch pun -90 (daca e 85 atunci insemna ca am 5)
+	//azimuth pun 0 
 	int alpha_ = 18, beta_ = 83, gamma_ = 97;
 	int f_ = 426; //4.26 mm inainte: 560
     int dist_ = 600; 
@@ -108,12 +111,20 @@ cv::Mat BEV::BirdEyeView::computeBirdEyeViewforImg()
 		0, 0, 1, 0
 		);
 
-
+	//(la translatie si sa vad daca mai trebuie in lume)
+	//inaltimea camerei fata de drum --> unde sa o pun?
 	cv::Mat M = K * (T * (R * A1));
 
 
 	cv::Mat BEV(src.size().height, src.size().width, CV_8UC3);
 	warpPerspective(src, BEV, M, BEV.size(), cv::INTER_LINEAR, cv::BORDER_CONSTANT);
+
+	//ce zona de pe drum vreau sa acopar, daca vreau sa vad cat e un pixel in lumea reala: 10x10cm = 1 pixel si 
+	//vreau sa fie de 10m pe 50m => img de cati pixeli?
+
+	//drum la nivel 0, sau la nivel -h
+	//feicare pixel din imp = pot sa calc unde e in 3d pe drum
+	//am doua sis de referinta => 
 
 	cv::imshow("src", src);
 	cv::imshow("dst", BEV);

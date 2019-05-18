@@ -49,13 +49,23 @@ int cross::Crosswalk::findLinesWithTheSameVP()
 	int howManyValues = 0;
 	std::vector<line::LineEquation>::iterator it;
 	for (it = m_lineEcuation.begin(); it != m_lineEcuation.end(); it++) {
-		float euqation = it->getParam_a() * m_vanishingPoint.x() + it->getParam_b() * m_vanishingPoint.y() + it->getParam_c();
-		float result = 0.0f;
-		if (std::abs(euqation - result) < 200.1f)
+		double euqation = it->getParam_a() * m_vanishingPoint.x() + it->getParam_b() * m_vanishingPoint.y() + it->getParam_c();
+		double result = 0.0f;
+		if (std::abs(euqation - result) < 1550.1f)
 		{
+			//if (it->getLine().pointStart().y() < 440 )
+			//	continue;
 			m_CrossWalkLines.push_back(it->getLine());
 			howManyValues++;
 		}
+		/*double distance = it->getDistanceFromPointToLine(m_vanishingPoint);
+		if (distance < 40)
+		{
+			if (it->getLine().pointStart().y() < 440)
+				continue;
+			m_CrossWalkLines.push_back(it->getLine());
+			howManyValues++;				
+		}*/
 	}
 	return howManyValues;
 }

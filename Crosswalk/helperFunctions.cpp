@@ -62,3 +62,10 @@ std::vector<line::LineEquation> getLineEqVectorFromLineVector(std::vector<line::
 	}
 	return lineEqVector;
 }
+
+void swapInt(float &x, float &y)
+{
+	float aux = x;
+	x = y;
+	y = aux;
+}
