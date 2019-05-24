@@ -44,6 +44,13 @@ double line::LineEquation::getDistanceFromPointToLine(point::Point P)
 	return distance;
 }
 
+
+void line::Line::set_rho_theta(double rho, double theta)
+{
+	m_rho = rho;
+	m_theta = theta;
+}
+
 double line::LineEquation::getSlope()
 {
 	return m_slope;

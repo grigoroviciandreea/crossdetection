@@ -128,6 +128,21 @@ void findCross()
 	//liniile alea le pastrez ca facand parte din cross
 }
 
+void findVP()
+{
+	cv::String path("./crosswalk_images/trec4.png");
+	cv::Mat img = cv::imread(path);
+
+	cv::Mat crossImg;
+	img.copyTo(crossImg);
+
+	hough::Hough H;
+	H.setImage(img);
+
+	std::vector<line::Line> linesVectorHough = H.houghLines('1');
+
+}
+
 int main()
 {
 	findCross();

@@ -27,19 +27,19 @@ std::vector<line::Line> hough::Hough::houghLines(char i) {
 		// hough coordinates to xy coordinates
 		for (size_t i = 0; i < houghLines.size(); i++)
 		{
-			float rho = houghLines[i][0], theta = houghLines[i][1];
-			float pt1x, pt1y, pt2x, pt2y;
+			double rho = houghLines[i][0], theta = houghLines[i][1];
+			double pt1x, pt1y, pt2x, pt2y;
 			double a = cos(theta), b = sin(theta);
 			double x0 = a*rho, y0 = b*rho;
-			pt1x = (float)(x0 + 1000 * (-b));
-			pt1y = (float)(y0 + 1000 * (a));
-			pt2x = (float)(x0 - 1000 * (-b));
-			pt2y = (float)(y0 - 1000 * (a));
+			pt1x = x0 + 1000 * (-b);
+			pt1y = y0 + 1000 * (a);
+			pt2x = x0 - 1000 * (-b);
+			pt2y = y0 - 1000 * (a);
 			lines[i][0] = cvRound(pt1x);
 			lines[i][1] = cvRound(pt1y);
 			lines[i][2] = cvRound(pt2x);
 			lines[i][3] = cvRound(pt2y);
-			finalLines.push_back(line::Line(point::Point(pt1x, pt1y), point::Point(pt2x, pt2y)));
+			finalLines.push_back(line::Line(point::Point(pt1x, pt1y), point::Point(pt2x, pt2y), rho, theta));
 		}
 	}
 
@@ -72,7 +72,7 @@ std::vector<line::Line> hough::Hough::probabilisticHoughLines(char i) {
 				finalLines[i].set_pointEnd(point::Point((float)l[2], (float)l[3]));
 			}
 			else
-			{
+			{ 
 				finalLines[i].set_pointStart(point::Point((float)l[2], (float)l[3]));
 				finalLines[i].set_pointEnd(point::Point((float)l[0], (float)l[1]));
 			}

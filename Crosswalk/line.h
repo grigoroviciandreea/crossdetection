@@ -6,27 +6,43 @@ namespace line
   class Line
   {
   public:
+	inline Line::Line(point::Point p1, point::Point p2, double rho, double theta);
     inline Line(point::Point, point::Point);
     inline Line();
 	point::Point pointStart();
 	point::Point pointEnd();
     void set_pointStart(point::Point);
     void set_pointEnd(point::Point);
+	void set_rho_theta(double rho, double theta);
   private:
     point::Point m_pStart;
 	point::Point m_pEnd;
+	double m_rho;   //distance
+	double m_theta; //tangent
   };
 
   inline Line::Line(point::Point p1, point::Point p2)
   {
 	  m_pStart = p1;
 	  m_pEnd = p2;
+	  m_rho = 0.0F;
+	  m_theta = 0.0F;
+  }
+
+  inline Line::Line(point::Point p1, point::Point p2, double rho, double theta)
+  {
+	  m_pStart = p1;
+	  m_pEnd = p2;
+	  m_rho = rho;
+	  m_theta = theta;
   }
 
   inline Line::Line()
   {
 	  m_pStart = point::Point(0.0f, 0.0f);
 	  m_pStart = point::Point(0.0f, 0.0f);
+	  m_rho = 0.0F;
+	  m_theta = 0.0F;
   }
 
   class LineEquation 
