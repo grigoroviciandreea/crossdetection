@@ -19,7 +19,7 @@ std::vector<line::Line> hough::Hough::houghLines(char i) {
     //houghLinesSrc = sobelResult(i);
 	houghLinesSrc = cannyResult(i);
 
-	HoughLines(houghLinesSrc, houghLines, 30, CV_PI / 180, 30);
+	HoughLines(houghLinesSrc, houghLines, 1, CV_PI / 180, 40);
 
 	lines.resize(houghLines.size());
 	if (houghLines.size() > 0)
@@ -117,9 +117,19 @@ cv::Mat hough::Hough::cannyResult(char i) {
 	cv::blur(m_image, image_blur, cv::Size(5, 5));
 	//  use image_blur instead of m_image 
 
+	//100 era 50
 	cv::Canny(image_blur, image_canny, 30, 50, 3);
 
-	for (int x = 0; x < (image_canny.size().height - 400); x++)
+	for (int x = 0; x < (image_canny.size().height - 350); x++)
+	{
+		for (int y = 0; y < image_canny.size().width; y++)
+		{
+			image_canny.at<uchar>(cv::Point(y, x)) = 0;
+
+		}
+	}
+
+	for (int x = (image_canny.size().height - 200); x < (image_canny.size().height); x++)
 	{
 		for (int y = 0; y < image_canny.size().width; y++)
 		{

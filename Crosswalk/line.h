@@ -14,6 +14,14 @@ namespace line
     void set_pointStart(point::Point);
     void set_pointEnd(point::Point);
 	void set_rho_theta(double rho, double theta);
+	double get_rho()
+	{
+		return m_rho;
+	}
+	double get_theta()
+	{
+		return m_theta;
+	}
   private:
     point::Point m_pStart;
 	point::Point m_pEnd;

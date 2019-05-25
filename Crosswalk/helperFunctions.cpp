@@ -69,3 +69,22 @@ void swapInt(float &x, float &y)
 	x = y;
 	y = aux;
 }
+
+point::Point getVPfromBuff(cv::Mat buff)
+{
+	int max = 0;
+	point::Point P;
+	for (int x = 0; x < buff.size().width; x++)
+	{
+		for (int y = 0; y < buff.size().height; y++)
+		{
+			if (max < buff.at<unsigned __int8>(x, y))
+			{
+				P.set_x(x);
+				P.set_y(y);
+				max = buff.at<unsigned __int8>(x, y);
+			}
+		}
+	}
+	return P;
+}

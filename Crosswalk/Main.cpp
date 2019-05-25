@@ -61,7 +61,8 @@ void ProbHoughTest()
 void HoughTest()
 {
 	hough::Hough H;
-	H.readImage("./crosswalk_images/trec5.png");
+	H.readImage("./crosswalk_images/new/test1.png");
+	//std::vector<line::Line> linesVectorHough  = H.houghLines('1');
 	cross::Crosswalk C(H.image(), H.houghLines('1'));
 	C.findParallelLinesInImage();
 }
@@ -79,7 +80,7 @@ void VanishingPoint()
 
 void findCross()
 {
-	cv::String path("./crosswalk_images/trec4.png");
+	cv::String path("./crosswalk_images/new/test1.png");
 	cv::Mat img = cv::imread(path);
 	int mode = 1; //1 - for Detect with Hough; 2 - for detect clasic 
 	VP::vanishingPt obj(img, mode);
@@ -130,27 +131,69 @@ void findCross()
 
 void findVP()
 {
-	cv::String path("./crosswalk_images/trec4.png");
+	cv::String path("./crosswalk_images/new/test1.png");
 	cv::Mat img = cv::imread(path);
-
-	cv::Mat crossImg;
-	img.copyTo(crossImg);
 
 	hough::Hough H;
 	H.setImage(img);
 
 	std::vector<line::Line> linesVectorHough = H.houghLines('1');
 
+	cv::Size size = cv::Size(img.size().width, img.size().height); //posibil sa fie invers, intai height apoi width
+	cv::Mat buff = cv::Mat::zeros(size, CV_8U);
+
+	const int BOUND_BOX_SIZE = 1; //sau sa pun 2
+	std::vector<line::Line>::iterator it;
+	//for each line 
+	for (it = linesVectorHough.begin(); it != linesVectorHough.end(); it++) {
+		double theta = it->get_theta();
+		double rho = it->get_rho();
+
+		//if direction is positive or negative
+		if (abs(tan(theta)) > 1)
+		{
+			for (int y = 0; y < img.size().height; y++)
+			{
+				int x = 0; //x = f(y)
+				//increment buffer around pixel in bounding box
+				for (int i = -BOUND_BOX_SIZE; i < BOUND_BOX_SIZE; i++) {
+					for (int j = -BOUND_BOX_SIZE; j < BOUND_BOX_SIZE; j++) {
+						buff.at<unsigned __int8>(x + i, y + j)++;
+					}
+				}
+			}
+		}
+		else
+		{
+			for (int x = 0; x < img.size().width; x++)
+			{
+				int y = 0;//y=f(x)
+				//increment buffer around pixel in bounding box
+				for (int i = -BOUND_BOX_SIZE; i < BOUND_BOX_SIZE; i++) {
+					for (int j = -BOUND_BOX_SIZE; j < BOUND_BOX_SIZE; j++) {
+						buff.at<unsigned __int8>(x + i, y + j)++;
+					}
+				}
+			}
+		}
+	}
+	cv::namedWindow("buffer", cv::WINDOW_AUTOSIZE);// Create a window for display.
+	imshow("buffer", buff);
+
+	point::Point vp = getVPfromBuff(buff);
 }
+
+
 
 int main()
 {
-	findCross();
+	//findCross();
 	//VanishingPoint();
 	//cv::destroyAllWindows();
 	//ProbHoughTest();
 	//HoughTest();
 	//ComputeBirdEyeView();
+	findVP();
 	cv::waitKey(0);
 	return 0;
 }

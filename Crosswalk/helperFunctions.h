@@ -15,3 +15,5 @@ cv::Mat paint_vp(cv::Mat, point::Point, std::string);
 std::vector<line::LineEquation> getLineEqVectorFromLineVector(std::vector<line::Line>);
 
 void swapInt(float &x, float &y);
+
+point::Point getVPfromBuff(cv::Mat buff);
