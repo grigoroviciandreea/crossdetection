@@ -74,14 +74,14 @@ point::Point getVPfromBuff(cv::Mat buff)
 {
 	int max = 0;
 	point::Point P;
-	for (int x = 0; x < buff.size().width; x++)
+	for (int x = 0; x < buff.size().height; x++)
 	{
-		for (int y = 0; y < buff.size().height; y++)
+		for (int y = 0; y < buff.size().width; y++)
 		{
 			if (max < buff.at<unsigned __int8>(x, y))
 			{
-				P.set_x(x);
-				P.set_y(y);
+				P.set_x(y);
+				P.set_y(x);
 				max = buff.at<unsigned __int8>(x, y);
 			}
 		}

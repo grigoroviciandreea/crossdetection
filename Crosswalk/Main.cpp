@@ -131,7 +131,7 @@ void findCross()
 
 void findVP()
 {
-	cv::String path("./crosswalk_images/new/test1.png");
+	cv::String path("./crosswalk_images/new/test10.png");
 	cv::Mat img = cv::imread(path);
 
 	hough::Hough H;
@@ -142,7 +142,7 @@ void findVP()
 	cv::Size size = cv::Size(img.size().width, img.size().height); //posibil sa fie invers, intai height apoi width
 	cv::Mat buff = cv::Mat::zeros(size, CV_8U);
 
-	const int BOUND_BOX_SIZE = 1; //sau sa pun 2
+	const int BOUND_BOX_SIZE = 4; //sau sa pun 4
 	std::vector<line::Line>::iterator it;
 	//for each line 
 	for (it = linesVectorHough.begin(); it != linesVectorHough.end(); it++) {
@@ -154,11 +154,19 @@ void findVP()
 		{
 			for (int y = 0; y < img.size().height; y++)
 			{
-				int x = 0; //x = f(y)
+				int x = (rho - y * sin(theta)) / cos(theta); //x = f(y)
+				//if (x > 0 && y > 0 && x < img.size().width && y < img.size().height)
+				//	buff.at<unsigned __int8>(y, x) += 10 ;
+
 				//increment buffer around pixel in bounding box
 				for (int i = -BOUND_BOX_SIZE; i < BOUND_BOX_SIZE; i++) {
 					for (int j = -BOUND_BOX_SIZE; j < BOUND_BOX_SIZE; j++) {
-						buff.at<unsigned __int8>(x + i, y + j)++;
+						if ((x + i) < img.size().width && (y + j) < img.size().height &&
+							(x + i) > 0 && (y + j) > 0)
+						{
+							if (buff.at<unsigned __int8>(y + j, x + i) < 255)
+								buff.at<unsigned __int8>(y + j, x + i)++;
+						}
 					}
 				}
 			}
@@ -167,11 +175,19 @@ void findVP()
 		{
 			for (int x = 0; x < img.size().width; x++)
 			{
-				int y = 0;//y=f(x)
-				//increment buffer around pixel in bounding box
+				int y = (rho - x* cos(theta)) / sin(theta); //y=f(x)		
+				//if(x > 0 && y > 0 && x < img.size().width && y < img.size().height)
+				//	buff.at<unsigned __int8>(y, x) += 10;
+
+				//increment buffer around pixel in bounding bsox
 				for (int i = -BOUND_BOX_SIZE; i < BOUND_BOX_SIZE; i++) {
 					for (int j = -BOUND_BOX_SIZE; j < BOUND_BOX_SIZE; j++) {
-						buff.at<unsigned __int8>(x + i, y + j)++;
+						if((x + i) < img.size().width && (y + j) < img.size().height &&
+						   (x + i) > 0 && (y + j) > 0)
+						{
+							if (buff.at<unsigned __int8>(y + j, x + i) < 255)
+								buff.at<unsigned __int8>(y + j, x + i)++;
+						}
 					}
 				}
 			}
@@ -181,6 +197,11 @@ void findVP()
 	imshow("buffer", buff);
 
 	point::Point vp = getVPfromBuff(buff);
+	std::cout << "VP:" << vp.x() << ", " << vp.y();
+
+
+
+	cv::Mat out_img = paint_vp(img, vp, "VP");
 }
 
 
