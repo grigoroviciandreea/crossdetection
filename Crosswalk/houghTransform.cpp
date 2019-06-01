@@ -19,7 +19,7 @@ std::vector<line::Line> hough::Hough::houghLines(char i) {
     //houghLinesSrc = sobelResult(i);
 	houghLinesSrc = cannyResult(i);
 
-	HoughLines(houghLinesSrc, houghLines, 1, CV_PI / 180, 40);
+	HoughLines(houghLinesSrc, houghLines, 1, CV_PI / 180, 80);
 
 	lines.resize(houghLines.size());
 	if (houghLines.size() > 0)
@@ -31,10 +31,10 @@ std::vector<line::Line> hough::Hough::houghLines(char i) {
 			double pt1x, pt1y, pt2x, pt2y;
 			double a = cos(theta), b = sin(theta);
 			double x0 = a*rho, y0 = b*rho;
-			pt1x = x0 + 1000 * (-b);
-			pt1y = y0 + 1000 * (a);
-			pt2x = x0 - 1000 * (-b);
-			pt2y = y0 - 1000 * (a);
+			pt1x = x0 + 2000 * (-b);
+			pt1y = y0 + 2000 * (a);
+			pt2x = x0 - 2000 * (-b);
+			pt2y = y0 - 2000 * (a);
 			lines[i][0] = cvRound(pt1x);
 			lines[i][1] = cvRound(pt1y);
 			lines[i][2] = cvRound(pt2x);
@@ -44,6 +44,8 @@ std::vector<line::Line> hough::Hough::houghLines(char i) {
 	}
 
 	paint_lines(result, lines, "Hough");
+
+	print_image(result, cv::String("./output_images/hough1.png"));
 	return finalLines;
 }
 
@@ -118,9 +120,9 @@ cv::Mat hough::Hough::cannyResult(char i) {
 	//  use image_blur instead of m_image 
 
 	//100 era 50
-	cv::Canny(image_blur, image_canny, 30, 50, 3);
+	cv::Canny(image_blur, image_canny, 80, 150, 3);
 
-	for (int x = 0; x < (image_canny.size().height - 350); x++)
+	for (int x = 0; x < (image_canny.size().height - 950); x++)
 	{
 		for (int y = 0; y < image_canny.size().width; y++)
 		{
@@ -129,7 +131,7 @@ cv::Mat hough::Hough::cannyResult(char i) {
 		}
 	}
 
-	for (int x = (image_canny.size().height - 200); x < (image_canny.size().height); x++)
+	for (int x = (image_canny.size().height - 500); x < (image_canny.size().height); x++)
 	{
 		for (int y = 0; y < image_canny.size().width; y++)
 		{
@@ -140,8 +142,12 @@ cv::Mat hough::Hough::cannyResult(char i) {
 
 	std::string imageName = "Canny Result" + std::string(1, i);
 
-	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);
+	cv::namedWindow(imageName, cv::WINDOW_NORMAL);
+	cv::resizeWindow(imageName, 432, 768);
 	imshow(imageName, image_canny);
+
+	print_image(image_canny, cv::String("./output_images/canny1.png"));
+	
 	return image_canny;
 }
 

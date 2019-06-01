@@ -131,7 +131,7 @@ void findCross()
 
 void findVP()
 {
-	cv::String path("./crosswalk_images/new/test10.png");
+	cv::String path("./crosswalk_images/new/test01.png");
 	cv::Mat img = cv::imread(path);
 
 	hough::Hough H;
@@ -193,8 +193,10 @@ void findVP()
 			}
 		}
 	}
-	cv::namedWindow("buffer", cv::WINDOW_AUTOSIZE);// Create a window for display.
-	imshow("buffer", buff);
+	//cv::namedWindow("buffer", cv::WINDOW_AUTOSIZE);// Create a window for display.
+	//imshow("buffer", buff);
+	
+	print_image(buff, cv::String("./output_images/buff1.png"));
 
 	point::Point vp = getVPfromBuff(buff);
 	std::cout << "VP:" << vp.x() << ", " << vp.y();
@@ -202,6 +204,8 @@ void findVP()
 
 
 	cv::Mat out_img = paint_vp(img, vp, "VP");
+	
+	print_image(out_img, cv::String("./output_images/vp1.png"));
 }
 
 
