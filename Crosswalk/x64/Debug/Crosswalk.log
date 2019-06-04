@@ -1,2 +1,21 @@
-﻿  Crosswalk.vcxproj -> F:\master\repo_cross\crossdetection\Crosswalk\x64\Debug\Crosswalk.exe
+﻿  houghTransform.cpp
+CL : warning : detected 'min' and/or 'max' macros and undefined them;
+CL : warning : you may wish to define NOMINMAX before including any windows header
+f:\master\repo_cross\crossdetection\crosswalk\houghtransform.cpp(42): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Main.cpp
+CL : warning : detected 'min' and/or 'max' macros and undefined them;
+CL : warning : you may wish to define NOMINMAX before including any windows header
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(40): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(41): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(99): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(124): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(125): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(126): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(127): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(172): warning C4267: 'argument': conversion from 'size_t' to 'const arma::uword', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\vanishingpoint.h(173): warning C4267: 'argument': conversion from 'size_t' to 'const arma::uword', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\main.cpp(157): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+f:\master\repo_cross\crossdetection\crosswalk\main.cpp(181): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
+  Crosswalk.vcxproj -> F:\master\repo_cross\crossdetection\Crosswalk\x64\Debug\Crosswalk.exe
   Crosswalk.vcxproj -> F:\master\repo_cross\crossdetection\Crosswalk\x64\Debug\Crosswalk.pdb (Partial PDB)

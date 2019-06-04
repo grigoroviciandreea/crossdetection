@@ -41,7 +41,7 @@ void paint_lines(cv::Mat &image, std::vector<line::Line> lines, std::string name
 	imshow(name, result);
 }
 
-void paint_lines_for_bw(cv::Mat image, std::vector<line::Line> lines, std::string name)
+cv::Mat paint_lines_for_bw(cv::Mat image, std::vector<line::Line> lines, std::string name)
 {
 	cv::Size size = cv::Size(image.size().width, image.size().height);
 	cv::Mat resultBW = cv::Mat::zeros(size, CV_8UC3);
@@ -63,10 +63,7 @@ void paint_lines_for_bw(cv::Mat image, std::vector<line::Line> lines, std::strin
 			cv::line(resultBW, cv::Point(lines[i].pointStart().x(), lines[i].pointStart().y()), cv::Point(lines[i].pointEnd().x(), lines[i].pointEnd().y()), cv::Scalar(255, 255, 255), 1, cv::LINE_AA);
 		}
 	}
-	cv::namedWindow(name, cv::WINDOW_NORMAL); // Create a window for display.
-	cv::resizeWindow(name, 432, 768);
-	imshow(name, resultBW);
-	print_image(resultBW, cv::String("./output_images/HoughBW.png"));
+	return resultBW;
 }
 
 cv::Mat paint_vp(cv::Mat image, point::Point vp, std::string name)
@@ -121,4 +118,26 @@ point::Point getVPfromBuff(cv::Mat buff)
 		}
 	}
 	return P;
+}
+
+cv::Mat applyDilation(cv::Mat input)
+{
+	int dilation_size = 2;
+	cv::Mat output = cv::Mat::zeros(input.size(), CV_8UC1);
+	cv::Mat element = cv::getStructuringElement(cv::MORPH_CROSS,
+		cv::Size(2 * dilation_size + 1, 2 * dilation_size + 1),
+		cv::Point(dilation_size, dilation_size));
+	cv::dilate(input, output, element);
+	return output;
+}
+
+cv::Mat applyErosion(cv::Mat input)
+{
+	int erosion_type = 1;
+	cv::Mat output = cv::Mat::zeros(input.size(), CV_8UC1);
+	cv::Mat element = cv::getStructuringElement(cv::MORPH_CROSS,
+		cv::Size(2 * erosion_type + 1, 2 * erosion_type + 1),
+		cv::Point(erosion_type, erosion_type));
+	cv::erode(input, output, element);
+	return output;
 }

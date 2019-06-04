@@ -81,10 +81,24 @@ std::vector<line::Line> hough::Hough::probabilisticHoughLines(char i) {
 	}
 
 	paint_lines(result, finalLines, "HoughProb");
+	print_image(result, cv::String("./output_images/hough1.png"));
 
-	paint_lines_for_bw(result, finalLines, "HoughBW");
+	cv::Mat bw = paint_lines_for_bw(result, finalLines, "HoughBW");
+	cv::Mat bwMorfo;
+	bw.convertTo(bwMorfo, CV_8UC1);
+	bwMorfo = applyDilation(bwMorfo);
 
-	print_image(result, cv::String("./output_images/houghBW1.png"));
+	cv::namedWindow("HoughBW", cv::WINDOW_NORMAL); // Create a window for display.
+	cv::resizeWindow("HoughBW", 432, 768);
+	cv::imshow("HoughBW", bw);
+
+	cv::namedWindow("HoughBWDILAT", cv::WINDOW_NORMAL); // Create a window for display.
+	cv::resizeWindow("HoughBWDILAT", 432, 768);
+	cv::imshow("HoughBWDILAT", bwMorfo);
+
+	print_image(bw, cv::String("./output_images/HoughBW.png"));
+	print_image(bwMorfo, cv::String("./output_images/HoughBWMORFO.png"));
+	
 
 	return finalLines;
 }

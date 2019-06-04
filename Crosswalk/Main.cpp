@@ -55,9 +55,9 @@ cv::Mat ComputeBirdEyeView()
 void ProbHoughTest()
 {
 	hough::Hough H;
-	H.readImage("./crosswalk_images/trec5.png");
+	H.readImage("./crosswalk_images/new/test01.png");
 	cross::Crosswalk C(H.image(), H.probabilisticHoughLines('1'));
-	C.findParallelLinesInImage();
+	//C.findParallelLinesInImage();
 }
 
 void HoughTest()
@@ -224,10 +224,10 @@ point::Point findVP(cv::String path, cv::String ending)
 
 int main()
 {
-	findCross();
+//	findCross();
 	//VanishingPoint();
 	//cv::destroyAllWindows();
-	//ProbHoughTest();
+	ProbHoughTest();
 	//HoughTest();
 	//ComputeBirdEyeView();
 //	findVP();
