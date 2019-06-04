@@ -1,6 +1,2 @@
-﻿  houghTransform.cpp
-CL : warning : detected 'min' and/or 'max' macros and undefined them;
-CL : warning : you may wish to define NOMINMAX before including any windows header
-f:\master\repo_cross\crossdetection\crosswalk\houghtransform.cpp(42): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  Crosswalk.vcxproj -> F:\master\repo_cross\crossdetection\Crosswalk\x64\Debug\Crosswalk.exe
+﻿  Crosswalk.vcxproj -> F:\master\repo_cross\crossdetection\Crosswalk\x64\Debug\Crosswalk.exe
   Crosswalk.vcxproj -> F:\master\repo_cross\crossdetection\Crosswalk\x64\Debug\Crosswalk.pdb (Partial PDB)

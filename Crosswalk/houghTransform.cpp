@@ -45,7 +45,6 @@ std::vector<line::Line> hough::Hough::houghLines(char i) {
 
 	paint_lines(result, lines, "Hough");
 
-	print_image(result, cv::String("./output_images/hough1.png"));
 	return finalLines;
 }
 
@@ -82,6 +81,11 @@ std::vector<line::Line> hough::Hough::probabilisticHoughLines(char i) {
 	}
 
 	paint_lines(result, finalLines, "HoughProb");
+
+	paint_lines_for_bw(result, finalLines, "HoughBW");
+
+	print_image(result, cv::String("./output_images/houghBW1.png"));
+
 	return finalLines;
 }
 

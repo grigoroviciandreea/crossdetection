@@ -23,9 +23,10 @@ void paint_lines(cv::Mat image, std::vector<cv::Vec4i> lines, std::string name)
 	imshow(name, result);
 }
 
-void paint_lines(cv::Mat image, std::vector<line::Line> lines, std::string name)
+void paint_lines(cv::Mat &image, std::vector<line::Line> lines, std::string name)
 {
 	cv::Mat result(image);
+
 
 	if (lines.size() > 0)
 	{
@@ -38,6 +39,34 @@ void paint_lines(cv::Mat image, std::vector<line::Line> lines, std::string name)
 	cv::namedWindow(name, cv::WINDOW_NORMAL); // Create a window for display.
 	cv::resizeWindow(name, 432, 768);
 	imshow(name, result);
+}
+
+void paint_lines_for_bw(cv::Mat image, std::vector<line::Line> lines, std::string name)
+{
+	cv::Size size = cv::Size(image.size().width, image.size().height);
+	cv::Mat resultBW = cv::Mat::zeros(size, CV_8UC3);
+
+	/*for (int i = 0; i < image.size().width; i++)
+	{
+		for (int j = 0; j < image.size().height; j++)
+		{
+			cv::Vec3b colour = image.at<cv::Vec3b>(cv::Point(i, j));
+			if (colour.val[0] == 0 && colour.val[1] == 150 && colour.val[2] == 255)
+				result.at<unsigned __int8>(j, i) = 255;
+		}
+	}*/
+	if (lines.size() > 0)
+	{
+		// paint detected lines
+		for (size_t i = 0; i < lines.size(); i++)
+		{
+			cv::line(resultBW, cv::Point(lines[i].pointStart().x(), lines[i].pointStart().y()), cv::Point(lines[i].pointEnd().x(), lines[i].pointEnd().y()), cv::Scalar(255, 255, 255), 1, cv::LINE_AA);
+		}
+	}
+	cv::namedWindow(name, cv::WINDOW_NORMAL); // Create a window for display.
+	cv::resizeWindow(name, 432, 768);
+	imshow(name, resultBW);
+	print_image(resultBW, cv::String("./output_images/HoughBW.png"));
 }
 
 cv::Mat paint_vp(cv::Mat image, point::Point vp, std::string name)

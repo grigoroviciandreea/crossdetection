@@ -8,7 +8,9 @@ void print_image(cv::Mat image, cv::String name);
 
 void paint_lines(cv::Mat, std::vector<cv::Vec4i>, std::string);
 
-void paint_lines(cv::Mat, std::vector<line::Line>, std::string);
+void paint_lines_for_bw(cv::Mat image, std::vector<line::Line> lines, std::string name);
+
+void paint_lines(cv::Mat &, std::vector<line::Line>, std::string);
 
 cv::Mat paint_vp(cv::Mat, point::Point, std::string);
 
