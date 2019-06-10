@@ -33,6 +33,7 @@ import json
 import datetime
 import numpy as np
 import skimage.draw
+from PIL import Image
 
 # Root directory of the project
 ROOT_DIR = os.path.abspath("..//..//")
@@ -209,16 +210,20 @@ def color_splash(image, mask):
     # Make a grayscale copy of the image. The grayscale copy still
     # has 3 RGB channels, though.
 	
-    red_multiplier = [150, 0, 0]
+    red_multiplier = [255, 0, 0]
 	
     red_img = skimage.color.gray2rgb(skimage.color.rgb2gray(image)) * red_multiplier
+    new_red_img = Image.new('RGB', (1080, 1920), "red")
+    new_red_img.show()
+    #image_red_total =  skimage.color.gray2rgb(skimage.color.rgb2grayimage)) * red_multiplier
+	
     # Copy color pixels from the original color image where mask is set
     if mask.shape[-1] > 0:
         # We're treating all instances as one, so collapse the mask into one layer
         mask = (np.sum(mask, -1, keepdims=True) >= 1)
-        splash = np.where(mask, image, red_img).astype(np.uint8)
+        splash = np.where(mask, new_red_img, image).astype(np.uint8)
     else:
-        splash = red_img.astype(np.uint8)
+        splash = image.astype(np.uint8)
     return splash
 
 
