@@ -214,7 +214,6 @@ def color_splash(image, mask):
 	
     red_img = skimage.color.gray2rgb(skimage.color.rgb2gray(image)) * red_multiplier
     new_red_img = Image.new('RGB', (1080, 1920), "red")
-    new_red_img.show()
     #image_red_total =  skimage.color.gray2rgb(skimage.color.rgb2grayimage)) * red_multiplier
 	
     # Copy color pixels from the original color image where mask is set
@@ -285,6 +284,7 @@ def detect_and_color_splash(model, image_path=None, video_path=None):
 
 if __name__ == '__main__':
     import argparse
+    import time
 
     # Parse command line arguments
     parser = argparse.ArgumentParser(
@@ -321,6 +321,7 @@ if __name__ == '__main__':
     print("Dataset: ", args.dataset)
     print("Logs: ", args.logs)
 
+    start_time_all = time.time()
     # Configurations
     if args.command == "train":
         config = CrosswalkConfig()
@@ -376,3 +377,5 @@ if __name__ == '__main__':
     else:
         print("'{}' is not recognized. "
               "Use 'train' or 'splash'".format(args.command))
+    end_time_all = time.time()
+    print("Time passed for entire program: ", end_time_all - start_time_all)

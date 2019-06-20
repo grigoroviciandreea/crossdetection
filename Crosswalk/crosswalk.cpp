@@ -53,8 +53,8 @@ int cross::Crosswalk::findLinesWithTheSameVP()
 		double result = 0.0f;
 		if (std::abs(euqation - result) < 1550.1f)
 		{
-			//if (it->getLine().pointStart().y() < 440 )
-			//	continue;
+			if (it->getLine().pointStart().y() < 1100 )
+				continue;
 			m_CrossWalkLines.push_back(it->getLine());
 			howManyValues++;
 		}

@@ -28,10 +28,10 @@ void line::LineEquation::calculateSlope()
 
 void line::LineEquation::calculateEcuationParameters()
 {
-	m_a = m_line.pointStart().y() - m_line.pointEnd().y();
-	m_b = m_line.pointEnd().x() - m_line.pointStart().x();
+	m_a = m_line.pointEnd().y() - m_line.pointStart().y();
+	m_b = m_line.pointStart().x() - m_line.pointEnd().x();
 
-	m_c = m_line.pointStart().x() * m_line.pointEnd().y() - m_line.pointStart().y() * m_line.pointEnd().x();
+	m_c = m_line.pointEnd().x() * m_line.pointStart().y() - m_line.pointEnd().y() * m_line.pointStart().x();
 }
 
 double line::LineEquation::getDistanceFromPointToLine(point::Point P)
